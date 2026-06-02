@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Course {
+  id         Int       @id @default(autoincrement())
+  code       String    @unique
+  name       String
+  semester   String
+  lecturer   String
+  students   Student[]
+  teams      Team[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Student {
+  id              Int           @id @default(autoincrement())
+  studentCode     String        @unique
+  name            String
+  email           String        @unique
+  major           String
+  avatar          String
+  targetGrade     String
+  commitmentHours String
+  status          String        @default("LOOKING")
+  skills          Json
+  bio             String
+  github          String?
+  linkedin        String?
+  website         String?
+  rating          Float         @default(0)
+  ratingCount     Int           @default(0)
+  courseId        Int
+  course          Course        @relation(fields: [courseId], references: [id])
+  ledTeams        Team[]        @relation("TeamLeader")
+  memberships     TeamMember[]
+  joinRequests    JoinRequest[]
+  reviews         Review[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Team {
+  id           Int           @id @default(autoincrement())
+  name         String
+  description  String
+  targetGrade  String
+  maxMembers   Int
+  status       String        @default("RECRUITING")
+  skills       Json
+  commitments  Json
+  courseId     Int
+  course       Course        @relation(fields: [courseId], references: [id])
+  leaderId     Int
+  leader       Student       @relation("TeamLeader", fields: [leaderId], references: [id])
+  members      TeamMember[]
+  joinRequests JoinRequest[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model TeamMember {
+  id        Int      @id @default(autoincrement())
+  role      String   @default("MEMBER")
+  teamId    Int
+  team      Team     @relation(fields: [teamId], references: [id])
+  studentId Int
+  student   Student  @relation(fields: [studentId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([teamId, studentId])
+}
+
+model JoinRequest {
+  id                  Int      @id @default(autoincrement())
+  status              String   @default("PENDING")
+  confirmedCommitments Json
+  message             String?
+  teamId              Int
+  team                Team     @relation(fields: [teamId], references: [id])
+  studentId           Int
+  student             Student  @relation(fields: [studentId], references: [id])
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([teamId, studentId])
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  teamName  String
+  content   String
+  rating    Float
+  studentId Int
+  student   Student  @relation(fields: [studentId], references: [id])
+  createdAt DateTime @default(now())
+}

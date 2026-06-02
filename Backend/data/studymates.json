@@ -1,0 +1,1260 @@
+{
+  "classroom": {
+    "id": 1,
+    "code": "SSH1151",
+    "name": "Tư tưởng Hồ Chí Minh",
+    "semester": "Học kỳ 2026.1",
+    "lecturer": "TS. Nguyễn Văn Hùng"
+  },
+  "students": [
+    {
+      "id": 1,
+      "studentCode": "20211000",
+      "name": "Nguyễn Minh Anh",
+      "email": "minhanh@hust.edu.vn",
+      "major": "Kỹ thuật phần mềm",
+      "avatar": "https://i.pravatar.cc/120?img=47",
+      "targetGrade": "A+",
+      "commitmentHours": "8h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4,
+      "ratingCount": 3,
+      "skills": [
+        "Giao tiếp",
+        "Leadership",
+        "Thuyết trình"
+      ],
+      "bio": "Thích lập kế hoạch rõ ràng và bám deadline."
+    },
+    {
+      "id": 2,
+      "studentCode": "20211013",
+      "name": "Trần Thu Hà",
+      "email": "tranthuha@hust.edu.vn",
+      "major": "Kỹ thuật phần mềm",
+      "avatar": "https://i.pravatar.cc/120?img=5",
+      "targetGrade": "A+",
+      "commitmentHours": "10h/tuần",
+      "status": "LOOKING",
+      "rating": 4.7,
+      "ratingCount": 4,
+      "skills": [
+        "Trách nhiệm",
+        "Quản lý thời gian",
+        "Hỗ trợ nhóm",
+        "Giao tiếp",
+        "Giải quyết vấn đề"
+      ],
+      "bio": "asdasdasasdasd",
+      "github": "github.com/username",
+      "linkedin": "linkedin.com/in/username",
+      "website": "yoursite.com",
+      "reviews": [
+        {
+          "teamName": "Nhóm Marketing 2025.2",
+          "content": "Có trách nhiệm, hoàn thành task đúng hạn.",
+          "rating": 5
+        },
+        {
+          "teamName": "Nhóm Pháp luật đại cương",
+          "content": "Chủ động giao tiếp và hỗ trợ team rất tốt.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "studentCode": "20211026",
+      "name": "Lê Hoàng Nam",
+      "email": "hoangnam@hust.edu.vn",
+      "major": "Khoa học máy tính",
+      "avatar": "https://i.pravatar.cc/120?img=12",
+      "targetGrade": "A",
+      "commitmentHours": "12h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.4,
+      "ratingCount": 5,
+      "skills": [
+        "Chủ động",
+        "Tư duy phản biện",
+        "Giải quyết vấn đề"
+      ],
+      "bio": "Mạnh về phân tích và trình bày luận điểm."
+    },
+    {
+      "id": 4,
+      "studentCode": "20211039",
+      "name": "Phạm Quỳnh Chi",
+      "email": "quynhchi@hust.edu.vn",
+      "major": "Hệ thống thông tin",
+      "avatar": "https://i.pravatar.cc/120?img=32",
+      "targetGrade": "A",
+      "commitmentHours": "15h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.1,
+      "ratingCount": 6,
+      "skills": [
+        "Giao tiếp",
+        "Teamwork"
+      ],
+      "bio": "Ưu tiên làm việc nhóm rõ vai trò."
+    },
+    {
+      "id": 5,
+      "studentCode": "20211052",
+      "name": "Vũ Đức Mạnh",
+      "email": "ducmanh@hust.edu.vn",
+      "major": "Kỹ thuật phần mềm",
+      "avatar": "https://i.pravatar.cc/120?img=15",
+      "targetGrade": "A",
+      "commitmentHours": "18h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.8,
+      "ratingCount": 7,
+      "skills": [
+        "Trách nhiệm",
+        "Hỗ trợ nhóm",
+        "Quản lý thời gian"
+      ],
+      "bio": "Có thể hỗ trợ tổng hợp tài liệu và nhắc deadline."
+    },
+    {
+      "id": 6,
+      "studentCode": "20211065",
+      "name": "Đỗ Khánh Linh",
+      "email": "khanhlinh@hust.edu.vn",
+      "major": "Kỹ thuật phần mềm",
+      "avatar": "https://i.pravatar.cc/120?img=44",
+      "targetGrade": "B+",
+      "commitmentHours": "20h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.5,
+      "ratingCount": 8,
+      "skills": [
+        "Chủ động",
+        "Thuyết trình",
+        "Giao tiếp"
+      ],
+      "bio": "Tự tin thuyết trình và điều phối nội dung."
+    },
+    {
+      "id": 7,
+      "studentCode": "20211091",
+      "name": "Bui Minh Tam",
+      "email": "bui.minh.tam@hust.edu.vn",
+      "major": "Ky thuat phan mem",
+      "avatar": "https://i.pravatar.cc/120?img=1",
+      "targetGrade": "A+",
+      "commitmentHours": "8h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4,
+      "ratingCount": 2,
+      "skills": [
+        "Giao tiep",
+        "Teamwork",
+        "Chu dong"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 8,
+      "studentCode": "20211104",
+      "name": "Dang Ha My",
+      "email": "dang.ha.my@hust.edu.vn",
+      "major": "Khoa hoc may tinh",
+      "avatar": "https://i.pravatar.cc/120?img=2",
+      "targetGrade": "A",
+      "commitmentHours": "10h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.1,
+      "ratingCount": 3,
+      "skills": [
+        "Trach nhiem",
+        "Quan ly thoi gian",
+        "Ho tro nhom"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 9,
+      "studentCode": "20211117",
+      "name": "Tran Quoc Bao",
+      "email": "tran.quoc.bao@hust.edu.vn",
+      "major": "He thong thong tin",
+      "avatar": "https://i.pravatar.cc/120?img=3",
+      "targetGrade": "B+",
+      "commitmentHours": "12h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.2,
+      "ratingCount": 4,
+      "skills": [
+        "Thuyet trinh",
+        "Leadership",
+        "Giai quyet van de"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 10,
+      "studentCode": "20211130",
+      "name": "Nguyen Hoai An",
+      "email": "nguyen.hoai.an@hust.edu.vn",
+      "major": "Tri tue nhan tao",
+      "avatar": "https://i.pravatar.cc/120?img=4",
+      "targetGrade": "A+",
+      "commitmentHours": "14h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.3,
+      "ratingCount": 5,
+      "skills": [
+        "Tu duy phan bien",
+        "Chu dong",
+        "Tu hoc"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 11,
+      "studentCode": "20211143",
+      "name": "Le Gia Huy",
+      "email": "le.gia.huy@hust.edu.vn",
+      "major": "Ky thuat phan mem",
+      "avatar": "https://i.pravatar.cc/120?img=5",
+      "targetGrade": "A",
+      "commitmentHours": "16h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.4,
+      "ratingCount": 6,
+      "skills": [
+        "Tong hop tai lieu",
+        "Giao tiep",
+        "Dung deadline"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 12,
+      "studentCode": "20211156",
+      "name": "Pham Minh Duc",
+      "email": "pham.minh.duc@hust.edu.vn",
+      "major": "Khoa hoc may tinh",
+      "avatar": "https://i.pravatar.cc/120?img=6",
+      "targetGrade": "B+",
+      "commitmentHours": "18h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.5,
+      "ratingCount": 7,
+      "skills": [
+        "Giao tiep",
+        "Teamwork",
+        "Chu dong"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 13,
+      "studentCode": "20211169",
+      "name": "Do Nhat Linh",
+      "email": "do.nhat.linh@hust.edu.vn",
+      "major": "He thong thong tin",
+      "avatar": "https://i.pravatar.cc/120?img=7",
+      "targetGrade": "A+",
+      "commitmentHours": "20h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.6,
+      "ratingCount": 8,
+      "skills": [
+        "Trach nhiem",
+        "Quan ly thoi gian",
+        "Ho tro nhom"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 14,
+      "studentCode": "20211182",
+      "name": "Hoang Bao Chau",
+      "email": "hoang.bao.chau@hust.edu.vn",
+      "major": "Tri tue nhan tao",
+      "avatar": "https://i.pravatar.cc/120?img=8",
+      "targetGrade": "A",
+      "commitmentHours": "8h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.7,
+      "ratingCount": 9,
+      "skills": [
+        "Thuyet trinh",
+        "Leadership",
+        "Giai quyet van de"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 15,
+      "studentCode": "20211195",
+      "name": "Vu Tien Dat",
+      "email": "vu.tien.dat@hust.edu.vn",
+      "major": "Ky thuat phan mem",
+      "avatar": "https://i.pravatar.cc/120?img=9",
+      "targetGrade": "B+",
+      "commitmentHours": "10h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.8,
+      "ratingCount": 2,
+      "skills": [
+        "Tu duy phan bien",
+        "Chu dong",
+        "Tu hoc"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 16,
+      "studentCode": "20211208",
+      "name": "Nguyen Khanh Vy",
+      "email": "nguyen.khanh.vy@hust.edu.vn",
+      "major": "Khoa hoc may tinh",
+      "avatar": "https://i.pravatar.cc/120?img=10",
+      "targetGrade": "A+",
+      "commitmentHours": "12h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.9,
+      "ratingCount": 3,
+      "skills": [
+        "Tong hop tai lieu",
+        "Giao tiep",
+        "Dung deadline"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 17,
+      "studentCode": "20211221",
+      "name": "Tran Hai Long",
+      "email": "tran.hai.long@hust.edu.vn",
+      "major": "He thong thong tin",
+      "avatar": "https://i.pravatar.cc/120?img=11",
+      "targetGrade": "A",
+      "commitmentHours": "14h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4,
+      "ratingCount": 4,
+      "skills": [
+        "Giao tiep",
+        "Teamwork",
+        "Chu dong"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 18,
+      "studentCode": "20211234",
+      "name": "Le Thanh Tung",
+      "email": "le.thanh.tung@hust.edu.vn",
+      "major": "Tri tue nhan tao",
+      "avatar": "https://i.pravatar.cc/120?img=12",
+      "targetGrade": "B+",
+      "commitmentHours": "16h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.1,
+      "ratingCount": 5,
+      "skills": [
+        "Trach nhiem",
+        "Quan ly thoi gian",
+        "Ho tro nhom"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 19,
+      "studentCode": "20211247",
+      "name": "Pham Ngoc Anh",
+      "email": "pham.ngoc.anh@hust.edu.vn",
+      "major": "Ky thuat phan mem",
+      "avatar": "https://i.pravatar.cc/120?img=13",
+      "targetGrade": "A+",
+      "commitmentHours": "18h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.2,
+      "ratingCount": 6,
+      "skills": [
+        "Thuyet trinh",
+        "Leadership",
+        "Giai quyet van de"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 20,
+      "studentCode": "20211260",
+      "name": "Do Minh Quan",
+      "email": "do.minh.quan@hust.edu.vn",
+      "major": "Khoa hoc may tinh",
+      "avatar": "https://i.pravatar.cc/120?img=14",
+      "targetGrade": "A",
+      "commitmentHours": "20h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.3,
+      "ratingCount": 7,
+      "skills": [
+        "Tu duy phan bien",
+        "Chu dong",
+        "Tu hoc"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 21,
+      "studentCode": "20211273",
+      "name": "Hoang Phuong Thao",
+      "email": "hoang.phuong.thao@hust.edu.vn",
+      "major": "He thong thong tin",
+      "avatar": "https://i.pravatar.cc/120?img=15",
+      "targetGrade": "B+",
+      "commitmentHours": "8h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.4,
+      "ratingCount": 8,
+      "skills": [
+        "Tong hop tai lieu",
+        "Giao tiep",
+        "Dung deadline"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 22,
+      "studentCode": "20211286",
+      "name": "Bui Anh Kiet",
+      "email": "bui.anh.kiet@hust.edu.vn",
+      "major": "Tri tue nhan tao",
+      "avatar": "https://i.pravatar.cc/120?img=16",
+      "targetGrade": "A+",
+      "commitmentHours": "10h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.5,
+      "ratingCount": 9,
+      "skills": [
+        "Giao tiep",
+        "Teamwork",
+        "Chu dong"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 23,
+      "studentCode": "20211299",
+      "name": "Nguyen Duc Anh",
+      "email": "nguyen.duc.anh@hust.edu.vn",
+      "major": "Ky thuat phan mem",
+      "avatar": "https://i.pravatar.cc/120?img=17",
+      "targetGrade": "A",
+      "commitmentHours": "12h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.6,
+      "ratingCount": 2,
+      "skills": [
+        "Trach nhiem",
+        "Quan ly thoi gian",
+        "Ho tro nhom"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 24,
+      "studentCode": "20211312",
+      "name": "Tran Mai Linh",
+      "email": "tran.mai.linh@hust.edu.vn",
+      "major": "Khoa hoc may tinh",
+      "avatar": "https://i.pravatar.cc/120?img=18",
+      "targetGrade": "B+",
+      "commitmentHours": "14h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.7,
+      "ratingCount": 3,
+      "skills": [
+        "Thuyet trinh",
+        "Leadership",
+        "Giai quyet van de"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 25,
+      "studentCode": "20211325",
+      "name": "Le Quang Hieu",
+      "email": "le.quang.hieu@hust.edu.vn",
+      "major": "He thong thong tin",
+      "avatar": "https://i.pravatar.cc/120?img=19",
+      "targetGrade": "A+",
+      "commitmentHours": "16h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.8,
+      "ratingCount": 4,
+      "skills": [
+        "Tu duy phan bien",
+        "Chu dong",
+        "Tu hoc"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 26,
+      "studentCode": "20211338",
+      "name": "Pham Gia Bao",
+      "email": "pham.gia.bao@hust.edu.vn",
+      "major": "Tri tue nhan tao",
+      "avatar": "https://i.pravatar.cc/120?img=20",
+      "targetGrade": "A",
+      "commitmentHours": "18h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.9,
+      "ratingCount": 5,
+      "skills": [
+        "Tong hop tai lieu",
+        "Giao tiep",
+        "Dung deadline"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 27,
+      "studentCode": "20211351",
+      "name": "Do Thu Trang",
+      "email": "do.thu.trang@hust.edu.vn",
+      "major": "Ky thuat phan mem",
+      "avatar": "https://i.pravatar.cc/120?img=21",
+      "targetGrade": "B+",
+      "commitmentHours": "20h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4,
+      "ratingCount": 6,
+      "skills": [
+        "Giao tiep",
+        "Teamwork",
+        "Chu dong"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 28,
+      "studentCode": "20211364",
+      "name": "Hoang Minh Khoi",
+      "email": "hoang.minh.khoi@hust.edu.vn",
+      "major": "Khoa hoc may tinh",
+      "avatar": "https://i.pravatar.cc/120?img=22",
+      "targetGrade": "A+",
+      "commitmentHours": "8h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.1,
+      "ratingCount": 7,
+      "skills": [
+        "Trach nhiem",
+        "Quan ly thoi gian",
+        "Ho tro nhom"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 29,
+      "studentCode": "20211377",
+      "name": "Vu Ngoc Mai",
+      "email": "vu.ngoc.mai@hust.edu.vn",
+      "major": "He thong thong tin",
+      "avatar": "https://i.pravatar.cc/120?img=23",
+      "targetGrade": "A",
+      "commitmentHours": "10h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.2,
+      "ratingCount": 8,
+      "skills": [
+        "Thuyet trinh",
+        "Leadership",
+        "Giai quyet van de"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 30,
+      "studentCode": "20211390",
+      "name": "Nguyen Tuan Minh",
+      "email": "nguyen.tuan.minh@hust.edu.vn",
+      "major": "Tri tue nhan tao",
+      "avatar": "https://i.pravatar.cc/120?img=24",
+      "targetGrade": "B+",
+      "commitmentHours": "12h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.3,
+      "ratingCount": 9,
+      "skills": [
+        "Tu duy phan bien",
+        "Chu dong",
+        "Tu hoc"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 31,
+      "studentCode": "20211403",
+      "name": "Tran Bao Ngoc",
+      "email": "tran.bao.ngoc@hust.edu.vn",
+      "major": "Ky thuat phan mem",
+      "avatar": "https://i.pravatar.cc/120?img=25",
+      "targetGrade": "A+",
+      "commitmentHours": "14h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.4,
+      "ratingCount": 2,
+      "skills": [
+        "Tong hop tai lieu",
+        "Giao tiep",
+        "Dung deadline"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 32,
+      "studentCode": "20211416",
+      "name": "Le Nhat Minh",
+      "email": "le.nhat.minh@hust.edu.vn",
+      "major": "Khoa hoc may tinh",
+      "avatar": "https://i.pravatar.cc/120?img=26",
+      "targetGrade": "A",
+      "commitmentHours": "16h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.5,
+      "ratingCount": 3,
+      "skills": [
+        "Giao tiep",
+        "Teamwork",
+        "Chu dong"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 33,
+      "studentCode": "20211429",
+      "name": "Pham Hoang Yen",
+      "email": "pham.hoang.yen@hust.edu.vn",
+      "major": "He thong thong tin",
+      "avatar": "https://i.pravatar.cc/120?img=27",
+      "targetGrade": "B+",
+      "commitmentHours": "18h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.6,
+      "ratingCount": 4,
+      "skills": [
+        "Trach nhiem",
+        "Quan ly thoi gian",
+        "Ho tro nhom"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 34,
+      "studentCode": "20211442",
+      "name": "Do Gia Han",
+      "email": "do.gia.han@hust.edu.vn",
+      "major": "Tri tue nhan tao",
+      "avatar": "https://i.pravatar.cc/120?img=28",
+      "targetGrade": "A+",
+      "commitmentHours": "20h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.7,
+      "ratingCount": 5,
+      "skills": [
+        "Thuyet trinh",
+        "Leadership",
+        "Giai quyet van de"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 35,
+      "studentCode": "20211455",
+      "name": "Hoang Anh Tuan",
+      "email": "hoang.anh.tuan@hust.edu.vn",
+      "major": "Ky thuat phan mem",
+      "avatar": "https://i.pravatar.cc/120?img=29",
+      "targetGrade": "A",
+      "commitmentHours": "8h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.8,
+      "ratingCount": 6,
+      "skills": [
+        "Tu duy phan bien",
+        "Chu dong",
+        "Tu hoc"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 36,
+      "studentCode": "20211468",
+      "name": "Bui Quang Minh",
+      "email": "bui.quang.minh@hust.edu.vn",
+      "major": "Khoa hoc may tinh",
+      "avatar": "https://i.pravatar.cc/120?img=30",
+      "targetGrade": "B+",
+      "commitmentHours": "10h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.9,
+      "ratingCount": 7,
+      "skills": [
+        "Tong hop tai lieu",
+        "Giao tiep",
+        "Dung deadline"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 37,
+      "studentCode": "20211481",
+      "name": "Nguyen Minh Khang",
+      "email": "nguyen.minh.khang@hust.edu.vn",
+      "major": "He thong thong tin",
+      "avatar": "https://i.pravatar.cc/120?img=31",
+      "targetGrade": "A+",
+      "commitmentHours": "12h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4,
+      "ratingCount": 8,
+      "skills": [
+        "Giao tiep",
+        "Teamwork",
+        "Chu dong"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 38,
+      "studentCode": "20211494",
+      "name": "Tran Thanh Lam",
+      "email": "tran.thanh.lam@hust.edu.vn",
+      "major": "Tri tue nhan tao",
+      "avatar": "https://i.pravatar.cc/120?img=32",
+      "targetGrade": "A",
+      "commitmentHours": "14h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.1,
+      "ratingCount": 9,
+      "skills": [
+        "Trach nhiem",
+        "Quan ly thoi gian",
+        "Ho tro nhom"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 39,
+      "studentCode": "20211507",
+      "name": "Le Hoang Phuc",
+      "email": "le.hoang.phuc@hust.edu.vn",
+      "major": "Ky thuat phan mem",
+      "avatar": "https://i.pravatar.cc/120?img=33",
+      "targetGrade": "B+",
+      "commitmentHours": "16h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.2,
+      "ratingCount": 2,
+      "skills": [
+        "Thuyet trinh",
+        "Leadership",
+        "Giai quyet van de"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 40,
+      "studentCode": "20211520",
+      "name": "Pham Khanh An",
+      "email": "pham.khanh.an@hust.edu.vn",
+      "major": "Khoa hoc may tinh",
+      "avatar": "https://i.pravatar.cc/120?img=34",
+      "targetGrade": "A+",
+      "commitmentHours": "18h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.3,
+      "ratingCount": 3,
+      "skills": [
+        "Tu duy phan bien",
+        "Chu dong",
+        "Tu hoc"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 41,
+      "studentCode": "20211533",
+      "name": "Do Bao Nam",
+      "email": "do.bao.nam@hust.edu.vn",
+      "major": "He thong thong tin",
+      "avatar": "https://i.pravatar.cc/120?img=35",
+      "targetGrade": "A",
+      "commitmentHours": "20h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.4,
+      "ratingCount": 4,
+      "skills": [
+        "Tong hop tai lieu",
+        "Giao tiep",
+        "Dung deadline"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 42,
+      "studentCode": "20211546",
+      "name": "Hoang Thuy Linh",
+      "email": "hoang.thuy.linh@hust.edu.vn",
+      "major": "Tri tue nhan tao",
+      "avatar": "https://i.pravatar.cc/120?img=36",
+      "targetGrade": "B+",
+      "commitmentHours": "8h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.5,
+      "ratingCount": 5,
+      "skills": [
+        "Giao tiep",
+        "Teamwork",
+        "Chu dong"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 43,
+      "studentCode": "20211559",
+      "name": "Vu Minh Tri",
+      "email": "vu.minh.tri@hust.edu.vn",
+      "major": "Ky thuat phan mem",
+      "avatar": "https://i.pravatar.cc/120?img=37",
+      "targetGrade": "A+",
+      "commitmentHours": "10h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.6,
+      "ratingCount": 6,
+      "skills": [
+        "Trach nhiem",
+        "Quan ly thoi gian",
+        "Ho tro nhom"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 44,
+      "studentCode": "20211572",
+      "name": "Nguyen Anh Thu",
+      "email": "nguyen.anh.thu@hust.edu.vn",
+      "major": "Khoa hoc may tinh",
+      "avatar": "https://i.pravatar.cc/120?img=38",
+      "targetGrade": "A",
+      "commitmentHours": "12h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.7,
+      "ratingCount": 7,
+      "skills": [
+        "Thuyet trinh",
+        "Leadership",
+        "Giai quyet van de"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 45,
+      "studentCode": "20211585",
+      "name": "Tran Duc Huy",
+      "email": "tran.duc.huy@hust.edu.vn",
+      "major": "He thong thong tin",
+      "avatar": "https://i.pravatar.cc/120?img=39",
+      "targetGrade": "B+",
+      "commitmentHours": "14h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.8,
+      "ratingCount": 8,
+      "skills": [
+        "Tu duy phan bien",
+        "Chu dong",
+        "Tu hoc"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 46,
+      "studentCode": "20211598",
+      "name": "Le Phuong Anh",
+      "email": "le.phuong.anh@hust.edu.vn",
+      "major": "Tri tue nhan tao",
+      "avatar": "https://i.pravatar.cc/120?img=40",
+      "targetGrade": "A+",
+      "commitmentHours": "16h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.9,
+      "ratingCount": 9,
+      "skills": [
+        "Tong hop tai lieu",
+        "Giao tiep",
+        "Dung deadline"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 47,
+      "studentCode": "20211611",
+      "name": "Pham Tien Dung",
+      "email": "pham.tien.dung@hust.edu.vn",
+      "major": "Ky thuat phan mem",
+      "avatar": "https://i.pravatar.cc/120?img=41",
+      "targetGrade": "A",
+      "commitmentHours": "18h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4,
+      "ratingCount": 2,
+      "skills": [
+        "Giao tiep",
+        "Teamwork",
+        "Chu dong"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 48,
+      "studentCode": "20211624",
+      "name": "Do Hai Yen",
+      "email": "do.hai.yen@hust.edu.vn",
+      "major": "Khoa hoc may tinh",
+      "avatar": "https://i.pravatar.cc/120?img=42",
+      "targetGrade": "B+",
+      "commitmentHours": "20h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.1,
+      "ratingCount": 3,
+      "skills": [
+        "Trach nhiem",
+        "Quan ly thoi gian",
+        "Ho tro nhom"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 49,
+      "studentCode": "20211637",
+      "name": "Hoang Nam Khanh",
+      "email": "hoang.nam.khanh@hust.edu.vn",
+      "major": "He thong thong tin",
+      "avatar": "https://i.pravatar.cc/120?img=43",
+      "targetGrade": "A+",
+      "commitmentHours": "8h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.2,
+      "ratingCount": 4,
+      "skills": [
+        "Thuyet trinh",
+        "Leadership",
+        "Giai quyet van de"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 50,
+      "studentCode": "20211650",
+      "name": "Bui Bao Tram",
+      "email": "bui.bao.tram@hust.edu.vn",
+      "major": "Tri tue nhan tao",
+      "avatar": "https://i.pravatar.cc/120?img=44",
+      "targetGrade": "A",
+      "commitmentHours": "10h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.3,
+      "ratingCount": 5,
+      "skills": [
+        "Tu duy phan bien",
+        "Chu dong",
+        "Tu hoc"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 51,
+      "studentCode": "20211663",
+      "name": "Nguyen Thanh Dat",
+      "email": "nguyen.thanh.dat@hust.edu.vn",
+      "major": "Ky thuat phan mem",
+      "avatar": "https://i.pravatar.cc/120?img=45",
+      "targetGrade": "B+",
+      "commitmentHours": "12h/tuần",
+      "status": "IN_TEAM",
+      "rating": 4.4,
+      "ratingCount": 6,
+      "skills": [
+        "Tong hop tai lieu",
+        "Giao tiep",
+        "Dung deadline"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 52,
+      "studentCode": "20211676",
+      "name": "Tran Gia Linh",
+      "email": "tran.gia.linh@hust.edu.vn",
+      "major": "Khoa hoc may tinh",
+      "avatar": "https://i.pravatar.cc/120?img=46",
+      "targetGrade": "A+",
+      "commitmentHours": "14h/tuần",
+      "status": "LOOKING",
+      "rating": 4.5,
+      "ratingCount": 7,
+      "skills": [
+        "Giao tiep",
+        "Teamwork",
+        "Chu dong"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 53,
+      "studentCode": "20211689",
+      "name": "Le Minh Chau",
+      "email": "le.minh.chau@hust.edu.vn",
+      "major": "He thong thong tin",
+      "avatar": "https://i.pravatar.cc/120?img=47",
+      "targetGrade": "A",
+      "commitmentHours": "16h/tuần",
+      "status": "LOOKING",
+      "rating": 4.6,
+      "ratingCount": 8,
+      "skills": [
+        "Trach nhiem",
+        "Quan ly thoi gian",
+        "Ho tro nhom"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 54,
+      "studentCode": "20211702",
+      "name": "Pham Nhat Long",
+      "email": "pham.nhat.long@hust.edu.vn",
+      "major": "Tri tue nhan tao",
+      "avatar": "https://i.pravatar.cc/120?img=48",
+      "targetGrade": "B+",
+      "commitmentHours": "18h/tuần",
+      "status": "LOOKING",
+      "rating": 4.7,
+      "ratingCount": 9,
+      "skills": [
+        "Thuyet trinh",
+        "Leadership",
+        "Giai quyet van de"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 55,
+      "studentCode": "20211715",
+      "name": "Do Quang Vinh",
+      "email": "do.quang.vinh@hust.edu.vn",
+      "major": "Ky thuat phan mem",
+      "avatar": "https://i.pravatar.cc/120?img=49",
+      "targetGrade": "A+",
+      "commitmentHours": "20h/tuần",
+      "status": "LOOKING",
+      "rating": 4.8,
+      "ratingCount": 2,
+      "skills": [
+        "Tu duy phan bien",
+        "Chu dong",
+        "Tu hoc"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 56,
+      "studentCode": "20211728",
+      "name": "Hoang Ngoc Han",
+      "email": "hoang.ngoc.han@hust.edu.vn",
+      "major": "Khoa hoc may tinh",
+      "avatar": "https://i.pravatar.cc/120?img=50",
+      "targetGrade": "A",
+      "commitmentHours": "8h/tuần",
+      "status": "LOOKING",
+      "rating": 4.9,
+      "ratingCount": 3,
+      "skills": [
+        "Tong hop tai lieu",
+        "Giao tiep",
+        "Dung deadline"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 57,
+      "studentCode": "20211741",
+      "name": "Vu Anh Quan",
+      "email": "vu.anh.quan@hust.edu.vn",
+      "major": "He thong thong tin",
+      "avatar": "https://i.pravatar.cc/120?img=51",
+      "targetGrade": "B+",
+      "commitmentHours": "10h/tuần",
+      "status": "LOOKING",
+      "rating": 4,
+      "ratingCount": 4,
+      "skills": [
+        "Giao tiep",
+        "Teamwork",
+        "Chu dong"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 58,
+      "studentCode": "20211754",
+      "name": "Nguyen Bao Linh",
+      "email": "nguyen.bao.linh@hust.edu.vn",
+      "major": "Tri tue nhan tao",
+      "avatar": "https://i.pravatar.cc/120?img=52",
+      "targetGrade": "A+",
+      "commitmentHours": "12h/tuần",
+      "status": "LOOKING",
+      "rating": 4.1,
+      "ratingCount": 5,
+      "skills": [
+        "Trach nhiem",
+        "Quan ly thoi gian",
+        "Ho tro nhom"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 59,
+      "studentCode": "20211767",
+      "name": "Tran Minh Nhat",
+      "email": "tran.minh.nhat@hust.edu.vn",
+      "major": "Ky thuat phan mem",
+      "avatar": "https://i.pravatar.cc/120?img=53",
+      "targetGrade": "A",
+      "commitmentHours": "14h/tuần",
+      "status": "LOOKING",
+      "rating": 4.2,
+      "ratingCount": 6,
+      "skills": [
+        "Thuyet trinh",
+        "Leadership",
+        "Giai quyet van de"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    },
+    {
+      "id": 60,
+      "studentCode": "20211780",
+      "name": "Le Ha Phuong",
+      "email": "le.ha.phuong@hust.edu.vn",
+      "major": "Khoa hoc may tinh",
+      "avatar": "https://i.pravatar.cc/120?img=54",
+      "targetGrade": "B+",
+      "commitmentHours": "16h/tuần",
+      "status": "LOOKING",
+      "rating": 4.3,
+      "ratingCount": 7,
+      "skills": [
+        "Tu duy phan bien",
+        "Chu dong",
+        "Tu hoc"
+      ],
+      "bio": "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+    }
+  ],
+  "teams": [
+    {
+      "id": 1,
+      "name": "Team A+ Warriors",
+      "leaderId": 1,
+      "description": "Nhóm hướng A+, học nghiêm túc, deadline-driven.",
+      "targetGrade": "A+",
+      "maxMembers": 5,
+      "status": "RECRUITING",
+      "skills": [
+        "Trách nhiệm",
+        "Chủ động"
+      ],
+      "commitments": [
+        "Họp đúng giờ",
+        "Hoàn thành task đúng hạn",
+        "Chủ động trao đổi",
+        "Tôn trọng thành viên"
+      ],
+      "memberIds": [
+        1,
+        2,
+        3,
+        5
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Tư Tưởng Pro",
+      "leaderId": 6,
+      "description": "Nhóm 4 người, mục tiêu thuyết trình xuất sắc.",
+      "targetGrade": "A+",
+      "maxMembers": 5,
+      "status": "RECRUITING",
+      "skills": [
+        "Thuyết trình",
+        "Giao tiếp"
+      ],
+      "commitments": [
+        "Họp đúng giờ",
+        "Hoàn thành task đúng hạn",
+        "Chủ động trao đổi",
+        "Tôn trọng thành viên"
+      ],
+      "memberIds": [
+        6,
+        4,
+        3,
+        5
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Học Vui Cùng Bác",
+      "leaderId": 4,
+      "description": "Nhóm vui vẻ nhưng làm việc nghiêm túc.",
+      "targetGrade": "A",
+      "maxMembers": 5,
+      "status": "RECRUITING",
+      "skills": [
+        "Teamwork",
+        "Tự học"
+      ],
+      "commitments": [
+        "Họp đúng giờ",
+        "Hoàn thành task đúng hạn",
+        "Chủ động trao đổi",
+        "Tôn trọng thành viên"
+      ],
+      "memberIds": [
+        4,
+        1,
+        6,
+        5
+      ]
+    }
+  ],
+  "joinRequests": [
+    {
+      "id": 1,
+      "teamId": 1,
+      "studentId": 2,
+      "confirmedCommitments": [
+        "Họp đúng giờ",
+        "Hoàn thành task đúng hạn",
+        "Chủ động trao đổi",
+        "Tôn trọng thành viên"
+      ],
+      "message": "",
+      "status": "PENDING",
+      "createdAt": "2026-06-02T01:04:11.334Z"
+    }
+  ]
+}
