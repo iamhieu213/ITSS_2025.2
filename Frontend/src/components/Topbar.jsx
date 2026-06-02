@@ -14,9 +14,9 @@ export default function Topbar({ classroom, onMenu }) {
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="truncate text-base font-bold text-slate-950 sm:text-lg">{classroom?.name ?? "StudyMates"}</h1>
               <span className="hidden text-slate-400 sm:inline">- {classroom?.code ?? "SSH1151"}</span>
-              <Badge tone="gray">{classroom?.semester ?? "Hoc ky"}</Badge>
+              <Badge tone="gray">{classroom?.semester ?? "Học kỳ"}</Badge>
             </div>
-            <p className="mt-1 hidden text-xs text-slate-500 sm:block">Giang vien: {classroom?.lecturer ?? "Dang tai"}</p>
+            <p className="mt-1 hidden text-xs text-slate-500 sm:block">Giảng viên: {classroom?.lecturer ?? "Đang tải"}</p>
           </div>
         </div>
         <button className="relative rounded-xl border border-slate-200 bg-white p-2.5 text-slate-600 shadow-sm">

@@ -5,9 +5,9 @@ import Badge from "./Badge.jsx";
 
 export default function Sidebar({ open, onClose, activePage, onNavigate, profile }) {
   const navItems = [
-    { label: "Dashboard", page: "dashboard", icon: Grid2X2 },
-    { label: "My Team", page: "my-team", icon: Users },
-    { label: "Profile", page: "profile", icon: User }
+    { label: "Bảng điều khiển", page: "dashboard", icon: Grid2X2 },
+    { label: "Nhóm của tôi", page: "my-team", icon: Users },
+    { label: "Hồ sơ", page: "profile", icon: User }
   ];
 
   return (
@@ -21,7 +21,7 @@ export default function Sidebar({ open, onClose, activePage, onNavigate, profile
             </div>
             <div>
               <div className="text-[15px] font-bold text-slate-950">StudyMates</div>
-              <div className="text-xs text-slate-500">Tim nhom hoc tap</div>
+              <div className="text-xs text-slate-500">Tìm nhóm học tập</div>
             </div>
           </div>
           <button className="rounded-xl p-2 text-slate-500 hover:bg-slate-100 lg:hidden" onClick={onClose}>
@@ -63,7 +63,7 @@ export default function Sidebar({ open, onClose, activePage, onNavigate, profile
         <div className="border-t border-slate-200 p-4">
           <button onClick={() => onNavigate("create-team")} className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-bold text-white hover:bg-blue-700">
             <UserPlus size={18} />
-            Tao nhom
+            Tạo nhóm
           </button>
         </div>
       </aside>

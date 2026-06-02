@@ -52,7 +52,7 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
     <main className="mx-auto max-w-[1280px] px-4 py-7 sm:px-6 lg:px-8">
       {myTeam ? (
         <section>
-          <h2 className="text-2xl font-black text-slate-950">Nhom cua ban</h2>
+          <h2 className="text-2xl font-black text-slate-950">Nhóm của bạn</h2>
           <div className="mt-5">
             <GroupCard group={myTeam} onJoin={onJoinGroup} />
           </div>

@@ -20,8 +20,8 @@ export default function JoinCommitmentModal({ group, profile, onSubmit, onClose 
           </div>
           <button onClick={onClose} className="rounded-xl p-2 text-slate-500 hover:bg-slate-100"><X size={18} /></button>
         </div>
-        <h2 className="mt-3 text-lg font-black text-slate-950">Cam ket trach nhiem</h2>
-        <p className="mt-1 text-sm text-slate-600"><strong className="text-slate-950">{group.name}</strong> - Truong nhom: {group.leader?.name}</p>
+        <h2 className="mt-3 text-lg font-black text-slate-950">Cam kết trách nhiệm</h2>
+        <p className="mt-1 text-sm text-slate-600"><strong className="text-slate-950">{group.name}</strong> - Trưởng nhóm: {group.leader?.name}</p>
         <div className="mt-4 space-y-3">
           {commitments.map((label) => {
             const isChecked = checked.includes(label);
@@ -33,15 +33,15 @@ export default function JoinCommitmentModal({ group, profile, onSubmit, onClose 
             );
           })}
         </div>
-        <textarea value={message} onChange={(event) => setMessage(event.target.value)} className="mt-4 min-h-20 w-full rounded-xl border border-slate-200 px-3 py-3 text-sm shadow-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100" placeholder="Loi nhan cho truong nhom..." />
+        <textarea value={message} onChange={(event) => setMessage(event.target.value)} className="mt-4 min-h-20 w-full rounded-xl border border-slate-200 px-3 py-3 text-sm shadow-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100" placeholder="Lời nhắn cho trưởng nhóm..." />
         <div className="mt-6 flex justify-end gap-3">
-          <button onClick={onClose} className="h-11 rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 shadow-sm hover:bg-slate-50">Huy</button>
+          <button onClick={onClose} className="h-11 rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 shadow-sm hover:bg-slate-50">Hủy</button>
           <button
             onClick={() => onSubmit(group.id, { studentId: profile.id, confirmedCommitments: checked, message })}
             disabled={!profile || checked.length < commitments.length}
             className="h-11 rounded-xl bg-blue-600 px-5 text-sm font-bold text-white shadow-sm hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
           >
-            Xac nhan
+            Xác nhận
           </button>
         </div>
       </section>

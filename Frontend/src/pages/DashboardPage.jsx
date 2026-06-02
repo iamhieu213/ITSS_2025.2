@@ -43,18 +43,18 @@ export default function DashboardPage({ classroom, students, teams, filters, set
     <main className="mx-auto max-w-[1580px] px-4 py-6 sm:px-6 lg:px-8">
       <section className="mx-auto max-w-[1280px]">
         <div className="mb-6">
-          <h2 className="text-2xl font-black tracking-normal text-slate-950 sm:text-3xl">Bang dieu khien lop hoc</h2>
-          <p className="mt-2 text-sm text-slate-500">Tim thanh vien phu hop va quan ly nhom cua ban.</p>
+          <h2 className="text-2xl font-black tracking-normal text-slate-950 sm:text-3xl">Bảng điều khiển lớp học</h2>
+          <p className="mt-2 text-sm text-slate-500">Tìm thành viên phù hợp và quản lý nhóm của bạn.</p>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
-          <StatCard label="Tong so sinh vien" value={stats.totalStudents ?? students.length} tone="blue" icon={Users} />
-          <StatCard label="Da co nhom" value={stats.studentsInTeam ?? 0} tone="green" icon={UserCheck} />
-          <StatCard label="Chua co nhom" value={stats.studentsWithoutTeam ?? 0} tone="orange" icon={UserPlus} />
+          <StatCard label="Tổng số sinh viên" value={stats.totalStudents ?? students.length} tone="blue" icon={Users} />
+          <StatCard label="Đã có nhóm" value={stats.studentsInTeam ?? 0} tone="green" icon={UserCheck} />
+          <StatCard label="Chưa có nhóm" value={stats.studentsWithoutTeam ?? 0} tone="orange" icon={UserPlus} />
         </div>
         <div className="mt-8 grid gap-6 xl:grid-cols-[1fr_520px]">
           <section className="min-w-0">
             <div className="mb-4 flex items-center justify-between gap-3">
-              <h2 className="text-lg font-bold text-slate-950">Danh sach sinh vien</h2>
+              <h2 className="text-lg font-bold text-slate-950">Danh sách sinh viên</h2>
               <span className="text-xs font-medium text-slate-500">{students.length}/{stats.totalStudents ?? students.length}</span>
             </div>
             <Filters filters={filters} setFilters={setFilters} />
@@ -101,8 +101,8 @@ export default function DashboardPage({ classroom, students, teams, filters, set
           </section>
           <aside className="min-w-0">
             <div className="mb-4 flex items-center justify-between gap-3">
-              <h2 className="text-lg font-bold text-slate-950">Danh sach nhom</h2>
-              <span className="text-xs font-medium text-slate-500">{teams.length} nhom</span>
+              <h2 className="text-lg font-bold text-slate-950">Danh sách nhóm</h2>
+              <span className="text-xs font-medium text-slate-500">{teams.length} nhóm</span>
             </div>
             <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-1">
               {visibleTeams.map((group) => <GroupCard key={group.id} group={group} onJoin={onJoinGroup} />)}

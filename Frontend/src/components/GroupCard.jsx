@@ -10,7 +10,7 @@ export default function GroupCard({ group, onJoin }) {
           <h3 className="font-bold text-slate-950">{group.name}</h3>
           <p className="mt-1 flex items-center gap-1 text-xs text-slate-500">
             <Crown size={14} className="text-amber-500" />
-            {group.leader?.name ?? "Chua co truong nhom"}
+            {group.leader?.name ?? "Chưa có trưởng nhóm"}
           </p>
         </div>
         <Badge tone={group.isNearlyFull ? "orange" : "blue"}>{group.status}</Badge>
@@ -26,13 +26,13 @@ export default function GroupCard({ group, onJoin }) {
       </div>
       <div className="mt-4 flex items-center gap-2 text-xs text-slate-600">
         <Target size={14} />
-        Muc tieu: <strong className="text-slate-950">{group.targetGrade}</strong>
+        Mục tiêu: <strong className="text-slate-950">{group.targetGrade}</strong>
       </div>
       <div className="mt-3 flex flex-wrap gap-2">
         {(group.skills ?? []).map((skill) => <span key={skill} className="rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-semibold text-blue-700">{skill}</span>)}
       </div>
       <button onClick={() => onJoin(group)} className="mt-4 h-11 w-full rounded-xl bg-blue-600 text-sm font-bold text-white shadow-sm hover:bg-blue-700">
-        Xin gia nhap
+        Xin gia nhập
       </button>
     </article>
   );

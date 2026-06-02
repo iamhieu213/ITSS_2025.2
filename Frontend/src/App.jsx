@@ -7,12 +7,13 @@ import CreateTeamPage from "./pages/CreateTeamPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import MyTeamPage from "./pages/MyTeamPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import { allGoalsValue, allSkillsValue, allStatusesValue } from "./constants/studymates.js";
 
 const defaultFilters = {
   query: "",
-  skill: "Tat ca ky nang",
-  goal: "Tat ca muc tieu",
-  status: "Tat ca"
+  skill: allSkillsValue,
+  goal: allGoalsValue,
+  status: allStatusesValue
 };
 
 export default function App() {
@@ -51,9 +52,9 @@ export default function App() {
       try {
         const data = await api.getStudents({
           query: filters.query,
-          skill: filters.skill === "Tat ca ky nang" ? "" : filters.skill,
-          goal: filters.goal === "Tat ca muc tieu" ? "" : filters.goal,
-          status: filters.status === "Tat ca" ? "" : filters.status
+          skill: filters.skill === allSkillsValue ? "" : filters.skill,
+          goal: filters.goal === allGoalsValue ? "" : filters.goal,
+          status: filters.status === allStatusesValue ? "" : filters.status
         });
         setStudents(data);
       } catch (err) {
@@ -82,7 +83,7 @@ export default function App() {
       const requestData = await api.getJoinRequests(payload.studentId);
       setJoinRequests(requestData);
       setJoiningGroup(null);
-      setNotice(request.status === "PENDING" ? "Da gui yeu cau gia nhap nhom." : "Da cap nhat yeu cau gia nhap nhom.");
+      setNotice(request.status === "PENDING" ? "Đã gửi yêu cầu gia nhập nhóm." : "Đã cập nhật yêu cầu gia nhập nhóm.");
     } catch (err) {
       setError(err.message);
     }
@@ -91,21 +92,21 @@ export default function App() {
   async function refreshAfterTeamCreated() {
     await loadBase();
     setActivePage("my-team");
-    setNotice("Da tao nhom moi.");
+    setNotice("Đã tạo nhóm mới.");
   }
 
   function handleProfileSaved(updated) {
     setProfile(updated);
-    setNotice("Da luu ho so.");
+    setNotice("Đã lưu hồ sơ.");
   }
 
   function handleInviteStudent(student) {
     if (student.status !== "LOOKING") {
-      setError(`${student.name} da co nhom, khong the moi.`);
+      setError(`${student.name} đã có nhóm, không thể mời.`);
       return;
     }
 
-    setNotice(`Da gui loi moi vao nhom cho ${student.name}.`);
+    setNotice(`Đã gửi lời mời vào nhóm cho ${student.name}.`);
   }
 
   return (

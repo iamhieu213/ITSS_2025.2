@@ -45,10 +45,10 @@ export default function ProfilePage({ profile, onSaved }) {
     <main className="mx-auto max-w-[1160px] px-4 py-6 sm:px-6 lg:px-8">
       <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h2 className="text-2xl font-black tracking-normal text-slate-950 sm:text-3xl">Ho so ca nhan</h2>
-          <p className="mt-2 text-sm text-slate-500">Cap nhat profile qua API `/api/students/{form.id}`.</p>
+          <h2 className="text-2xl font-black tracking-normal text-slate-950 sm:text-3xl">Hồ sơ cá nhân</h2>
+          <p className="mt-2 text-sm text-slate-500">Cập nhật hồ sơ qua API `/api/students/{form.id}`.</p>
         </div>
-        <button onClick={save} className="inline-flex h-11 w-fit items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-bold text-white hover:bg-blue-700"><Pencil size={17} /> Luu thay doi</button>
+        <button onClick={save} className="inline-flex h-11 w-fit items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-bold text-white hover:bg-blue-700"><Pencil size={17} /> Lưu thay đổi</button>
       </div>
       <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
         <aside className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
