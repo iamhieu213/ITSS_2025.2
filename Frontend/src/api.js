@@ -12,8 +12,10 @@ function toQuery(params = {}) {
 }
 
 async function request(path, options = {}) {
+  const token = localStorage.getItem("token");
   const headers = {
     "Content-Type": "application/json",
+    ...(token ? { "Authorization": `Bearer ${token}` } : {}),
     ...options.headers
   };
 
@@ -28,14 +30,20 @@ async function request(path, options = {}) {
 }
 
 export const api = {
+  login: (payload) => request("/auth/login", { method: "POST", body: JSON.stringify(payload) }),
+  register: (payload) => request("/auth/register", { method: "POST", body: JSON.stringify(payload) }),
   getClassroom: () => request("/classroom"),
   getStudents: (params) => request(`/students${toQuery(params)}`),
   getStudent: (id) => request(`/students/${id}`),
   updateStudent: (id, payload) => request(`/students/${id}`, { method: "PUT", body: JSON.stringify(payload) }),
   getTeams: () => request("/teams"),
   createTeam: (payload) => request("/teams", { method: "POST", body: JSON.stringify(payload) }),
-  getJoinRequests: (studentId) => request(`/teams/join-requests${toQuery({ studentId })}`),
+  getJoinRequests: (params) => request(`/teams/join-requests${toQuery(params)}`),
   createJoinRequest: (teamId, payload) =>
     request(`/teams/${teamId}/join-requests`, { method: "POST", body: JSON.stringify(payload) }),
-  getProfile: () => request("/profile/me")
+  updateJoinRequestStatus: (requestId, status) =>
+    request(`/teams/join-requests/${requestId}/status`, { method: "PATCH", body: JSON.stringify({ status }) }),
+  deleteJoinRequest: (requestId) =>
+    request(`/teams/join-requests/${requestId}`, { method: "DELETE" }),
+  getProfile: (studentId) => request(`/profile/me${studentId ? toQuery({ studentId }) : ""}`)
 };

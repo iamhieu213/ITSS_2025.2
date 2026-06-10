@@ -1,7 +1,9 @@
 import { BookOpen, Plus } from "lucide-react";
 import React, { useState } from "react";
 import { api } from "../api.js";
-import { defaultCommitments } from "../constants/studymates.js";
+import { defaultCommitments, skillSuggestions } from "../constants/studymates.js";
+
+const targetGrades = ["A+", "A", "B+", "B", "C+", "C", "D+", "D", "F"];
 
 export default function CreateTeamPage({ profile, onCreated, onCancel }) {
   const [form, setForm] = useState({
@@ -35,18 +37,58 @@ export default function CreateTeamPage({ profile, onCreated, onCancel }) {
           <p className="mt-2 text-sm text-slate-500">Dữ liệu sẽ được gửi lên API `/api/teams`.</p>
         </div>
         <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h3 className="flex items-center gap-2 text-base font-black text-slate-950"><BookOpen size={18} className="text-blue-600" /> Thong tin co ban</h3>
+          <h3 className="flex items-center gap-2 text-base font-black text-slate-950">
+            <BookOpen size={18} className="text-blue-600" /> Thông tin cơ bản
+          </h3>
           <div className="mt-5 grid gap-4">
             <input required value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} className="h-11 rounded-xl border border-slate-200 px-3 text-sm shadow-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100" placeholder="Tên nhóm" />
             <textarea required value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} className="min-h-24 rounded-xl border border-slate-200 px-3 py-3 text-sm shadow-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100" placeholder="Mô tả nhóm" />
+            
             <div className="grid gap-4 sm:grid-cols-2">
               <select value={form.targetGrade} onChange={(event) => setForm({ ...form, targetGrade: event.target.value })} className="h-11 rounded-xl border border-slate-200 px-3 text-sm shadow-sm outline-none">
-                <option>A+</option><option>A</option><option>B+</option>
+                {targetGrades.map((grade) => (
+                  <option key={grade} value={grade}>{grade}</option>
+                ))}
               </select>
               <input type="number" min="2" max="10" value={form.maxMembers} onChange={(event) => setForm({ ...form, maxMembers: event.target.value })} className="h-11 rounded-xl border border-slate-200 px-3 text-sm shadow-sm outline-none" />
             </div>
-            <input value={form.skills} onChange={(event) => setForm({ ...form, skills: event.target.value })} className="h-11 rounded-xl border border-slate-200 px-3 text-sm shadow-sm outline-none" placeholder="Kỹ năng, cách nhau bằng dấu phẩy" />
-            <textarea value={form.commitments} onChange={(event) => setForm({ ...form, commitments: event.target.value })} className="min-h-20 rounded-xl border border-slate-200 px-3 py-3 text-sm shadow-sm outline-none" placeholder="Cam kết, cách nhau bằng dấu phẩy" />
+
+            <div className="space-y-2">
+              <input value={form.skills} onChange={(event) => setForm({ ...form, skills: event.target.value })} className="h-11 w-full rounded-xl border border-slate-200 px-3 text-sm shadow-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100" placeholder="Kỹ năng, cách nhau bằng dấu phẩy" />
+              
+              <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                <span className="text-xs font-semibold text-slate-500 mr-1">Gợi ý:</span>
+                {skillSuggestions.map((skill) => {
+                  const currentSkills = form.skills.split(",").map(s => s.trim()).filter(Boolean);
+                  const isSelected = currentSkills.some(s => s.toLowerCase() === skill.toLowerCase());
+                  
+                  return (
+                    <button
+                      key={skill}
+                      type="button"
+                      onClick={() => {
+                        let nextSkills;
+                        if (isSelected) {
+                          nextSkills = currentSkills.filter(s => s.toLowerCase() !== skill.toLowerCase());
+                        } else {
+                          nextSkills = [...currentSkills, skill];
+                        }
+                        setForm({ ...form, skills: nextSkills.join(", ") });
+                      }}
+                      className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-semibold border transition duration-150 active:scale-95 ${
+                        isSelected
+                          ? "bg-blue-50 border-blue-200 text-blue-700 font-bold"
+                          : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                      }`}
+                    >
+                      {isSelected ? "✓" : "+"} {skill}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <textarea value={form.commitments} onChange={(event) => setForm({ ...form, commitments: event.target.value })} className="min-h-20 rounded-xl border border-slate-200 px-3 py-3 text-sm shadow-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100" placeholder="Cam kết, cách nhau bằng dấu phẩy" />
           </div>
         </section>
         <div className="flex justify-end gap-3">

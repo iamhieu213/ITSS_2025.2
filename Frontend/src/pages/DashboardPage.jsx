@@ -8,7 +8,7 @@ import StudentCard from "../components/StudentCard.jsx";
 const studentsPerPage = 8;
 const groupsPerPage = 3;
 
-export default function DashboardPage({ classroom, students, teams, filters, setFilters, onJoinGroup, onInviteStudent }) {
+export default function DashboardPage({ classroom, students, teams, filters, setFilters, currentStudentId, isStudentInTeam = false, joinRequests = [], onJoinGroup, onInviteStudent }) {
   const stats = classroom?.stats ?? {};
   const [page, setPage] = useState(1);
   const [groupPage, setGroupPage] = useState(1);
@@ -59,7 +59,7 @@ export default function DashboardPage({ classroom, students, teams, filters, set
             </div>
             <Filters filters={filters} setFilters={setFilters} />
             <div className="mt-5 grid gap-5 md:grid-cols-2">
-              {visibleStudents.map((student) => <StudentCard key={student.id} student={student} onInvite={onInviteStudent} />)}
+              {visibleStudents.map((student) => <StudentCard key={student.id} student={student} currentStudentId={currentStudentId} onInvite={onInviteStudent} />)}
             </div>
             <div className="mt-6 flex flex-col items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm sm:flex-row">
               <p className="text-sm font-medium text-slate-500">
@@ -105,7 +105,16 @@ export default function DashboardPage({ classroom, students, teams, filters, set
               <span className="text-xs font-medium text-slate-500">{teams.length} nhóm</span>
             </div>
             <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-1">
-              {visibleTeams.map((group) => <GroupCard key={group.id} group={group} onJoin={onJoinGroup} />)}
+              {visibleTeams.map((group) => (
+                <GroupCard
+                  key={group.id}
+                  group={group}
+                  currentStudentId={currentStudentId}
+                  isStudentInTeam={isStudentInTeam}
+                  joinRequests={joinRequests}
+                  onJoin={onJoinGroup}
+                />
+              ))}
             </div>
             <div className="mt-6 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
               <p className="text-center text-sm font-medium text-slate-500">

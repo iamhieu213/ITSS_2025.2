@@ -3,8 +3,9 @@ import React from "react";
 import { statusLabel } from "../utils/status.js";
 import Badge from "./Badge.jsx";
 
-export default function StudentCard({ student, onInvite }) {
-  const canInvite = student.status === "LOOKING";
+export default function StudentCard({ student, currentStudentId, onInvite }) {
+  const isSelf = student.id === currentStudentId;
+  const canInvite = student.status === "LOOKING" && !isSelf;
 
   return (
     <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
@@ -40,7 +41,7 @@ export default function StudentCard({ student, onInvite }) {
         }`}
       >
         <Send size={16} />
-        {canInvite ? "Mời vào nhóm" : "Đã có nhóm"}
+        {isSelf ? "Chính bạn" : canInvite ? "Mời vào nhóm" : "Đã có nhóm"}
       </button>
     </article>
   );

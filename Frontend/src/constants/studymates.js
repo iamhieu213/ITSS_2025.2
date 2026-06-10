@@ -26,7 +26,13 @@ export const goals = [
   { value: allGoalsValue, label: "Tất cả mục tiêu" },
   { value: "A+", label: "A+" },
   { value: "A", label: "A" },
-  { value: "B+", label: "B+" }
+  { value: "B+", label: "B+" },
+  { value: "B", label: "B" },
+  { value: "C+", label: "C+" },
+  { value: "C", label: "C" },
+  { value: "D+", label: "D+" },
+  { value: "D", label: "D" },
+  { value: "F", label: "F" }
 ];
 
 export const statuses = [
@@ -37,4 +43,4 @@ export const statuses = [
 
 export const defaultCommitments = ["Họp đúng giờ", "Hoàn thành task đúng hạn", "Chủ động trao đổi", "Tôn trọng thành viên"];
 
-export const skillSuggestions = ["Giao tiếp", "Chủ động", "Leadership", "Teamwork", "Thuyết trình", "Giải quyết vấn đề"];
+export const skillSuggestions = ["Trách nhiệm", "Chủ động", "Giao tiếp", "Leadership", "Teamwork", "Thuyết trình", "Giải quyết vấn đề", "Hỗ trợ nhóm"];

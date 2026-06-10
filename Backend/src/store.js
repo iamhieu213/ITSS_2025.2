@@ -4,7 +4,9 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.resolve(__dirname, "..", "data");
-const dataFile = path.join(dataDir, "studymates.json");
+const dataFile = process.env.DATA_FILE
+  ? path.resolve(dataDir, process.env.DATA_FILE)
+  : path.join(dataDir, "studymates.json");
 
 const initialData = {
   classroom: {
@@ -269,6 +271,7 @@ const teamSkillSets = [
 ];
 
 const teamCommitments = ["Hop dung gio", "Hoan thanh task dung han", "Chu dong trao doi", "Ton trong thanh vien"];
+const DEFAULT_HASHED_PASSWORD = "$2b$10$ev7BuuK89RdqPueiv1shIOWvU4pkXoIFV.o49Ligd3Q86Atv7I49m"; // bcrypt for "student123"
 
 function createGeneratedStudents() {
   return generatedNames.map((name, index) => {
@@ -279,6 +282,7 @@ function createGeneratedStudents() {
       studentCode: String(20211000 + id * 13),
       name,
       email: `${slug}@hust.edu.vn`,
+      password: DEFAULT_HASHED_PASSWORD,
       major: majors[index % majors.length],
       avatar: `https://i.pravatar.cc/120?img=${(index % 60) + 1}`,
       targetGrade: goals[index % goals.length],
@@ -344,15 +348,25 @@ function normalizeSeedData(data) {
   };
 }
 
-initialData.students = [...initialData.students, ...createGeneratedStudents()];
+initialData.students = [
+  ...initialData.students.map((student) => ({ ...student, password: student.password || DEFAULT_HASHED_PASSWORD })),
+  ...createGeneratedStudents()
+];
 initialData.teams = createSeedTeams(initialData.students);
 
 async function ensureDataFile() {
   await mkdir(dataDir, { recursive: true });
   try {
     const data = JSON.parse(await readFile(dataFile, "utf8"));
+    let modified = false;
+    for (const student of data.students) {
+      if (!student.password) {
+        student.password = DEFAULT_HASHED_PASSWORD;
+        modified = true;
+      }
+    }
     const normalizedData = normalizeSeedData(data);
-    if (normalizedData !== data) {
+    if (normalizedData !== data || modified) {
       await writeFile(dataFile, JSON.stringify(normalizedData, null, 2), "utf8");
     }
   } catch {

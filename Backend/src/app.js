@@ -8,6 +8,7 @@ import classroomRoutes from "./routes/classroom.js";
 import profileRoutes from "./routes/profile.js";
 import studentRoutes from "./routes/students.js";
 import teamRoutes from "./routes/teams.js";
+import authRoutes from "./routes/auth.js";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.get("/api/health", (_req, res) => {
   res.json({ ok: true, service: "studymates-backend" });
 });
 
+app.use("/api/auth", authRoutes);
 app.use("/api/classroom", classroomRoutes);
 app.use("/api/students", studentRoutes);
 app.use("/api/teams", teamRoutes);
