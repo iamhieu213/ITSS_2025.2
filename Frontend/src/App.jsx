@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { api } from "./api.js";
 import JoinCommitmentModal from "./components/JoinCommitmentModal.jsx";
 import Sidebar from "./components/Sidebar.jsx";
+import StudentDetailModal from "./components/StudentDetailModal.jsx";
 import Topbar from "./components/Topbar.jsx";
 import { allGoalsValue, allSkillsValue, allStatusesValue } from "./constants/studymates.js";
 import CreateTeamPage from "./pages/CreateTeamPage.jsx";
@@ -55,6 +56,7 @@ export default function App() {
   const [profile, setProfile] = useState(null);
   const [joinRequests, setJoinRequests] = useState([]);
   const [joiningGroup, setJoiningGroup] = useState(null);
+  const [selectedStudent, setSelectedStudent] = useState(null);
   const [filters, setFilters] = useState(defaultFilters);
 
   async function loadRequestsForProfile(profileData) {
@@ -90,6 +92,17 @@ export default function App() {
         });
       }
     }
+  }
+
+  async function loadStudentsForCurrentFilters() {
+    const data = await api.getStudents({
+      query: filters.query,
+      skill: filters.skill === allSkillsValue ? "" : filters.skill,
+      goal: filters.goal === allGoalsValue ? "" : filters.goal,
+      status: filters.status === allStatusesValue ? "" : filters.status
+    });
+    setStudents(data);
+    return data;
   }
 
   useEffect(() => {
@@ -135,13 +148,7 @@ export default function App() {
     if (!token) return;
     const timer = setTimeout(async () => {
       try {
-        const data = await api.getStudents({
-          query: filters.query,
-          skill: filters.skill === allSkillsValue ? "" : filters.skill,
-          goal: filters.goal === allGoalsValue ? "" : filters.goal,
-          status: filters.status === allStatusesValue ? "" : filters.status
-        });
-        setStudents(data);
+        await loadStudentsForCurrentFilters();
       } catch (err) {
         Toast.fire({
           icon: "error",
@@ -252,6 +259,160 @@ export default function App() {
     });
   }
 
+  async function handleViewStudent(student) {
+    try {
+      const freshStudent = await api.getStudent(student.id);
+      setSelectedStudent(freshStudent);
+    } catch (err) {
+      Swal.fire({
+        title: "Không thể mở hồ sơ",
+        text: err.message,
+        icon: "error",
+        confirmButtonColor: "#ef4444"
+      });
+    }
+  }
+
+  async function handleReviewMember(member) {
+    try {
+      const result = await Swal.fire({
+        title: `Đánh giá ${member.name}`,
+        html: `
+          <div style="text-align:left">
+            <label for="review-rating" style="display:block;margin-bottom:6px;font-size:13px;font-weight:700;color:#334155">Số sao</label>
+            <select id="review-rating" class="swal2-input" style="width:100%;margin:0 0 14px 0">
+              <option value="5">5 sao</option>
+              <option value="4">4 sao</option>
+              <option value="3">3 sao</option>
+              <option value="2">2 sao</option>
+              <option value="1">1 sao</option>
+            </select>
+            <label for="review-content" style="display:block;margin-bottom:6px;font-size:13px;font-weight:700;color:#334155">Nhận xét</label>
+            <textarea id="review-content" class="swal2-textarea" maxlength="500" placeholder="Nhập nhận xét của bạn..." style="width:100%;min-height:110px;margin:0"></textarea>
+          </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: "Gửi đánh giá",
+        cancelButtonText: "Hủy",
+        confirmButtonColor: "#2563eb",
+        preConfirm: () => {
+          const rating = Number(document.getElementById("review-rating")?.value ?? 5);
+          const content = document.getElementById("review-content")?.value.trim() ?? "";
+          return { rating, content };
+        }
+      });
+
+      if (!result.isConfirmed) return;
+
+      const updatedStudent = await api.createStudentReview(member.id, result.value);
+      await loadBase();
+      await loadStudentsForCurrentFilters();
+      setSelectedStudent((current) => current?.id === member.id ? updatedStudent : current);
+      Toast.fire({
+        icon: "success",
+        title: "Đã gửi đánh giá thành viên."
+      });
+    } catch (err) {
+      Swal.fire({
+        title: "Lỗi đánh giá",
+        text: err.message,
+        icon: "error",
+        confirmButtonColor: "#ef4444"
+      });
+    }
+  }
+
+  async function handleLeaveTeam(team) {
+    try {
+      const isLeader = team.leaderId === profile?.id;
+      const remainingMembers = (team.members ?? []).filter((member) => member.id !== profile?.id);
+      let payload = {};
+
+      if (isLeader && remainingMembers.length > 0) {
+        const inputOptions = Object.fromEntries(remainingMembers.map((member) => [member.id, `${member.name} (${member.studentCode})`]));
+        const result = await Swal.fire({
+          title: "Chọn trưởng nhóm mới",
+          text: "Bạn cần chuyển quyền trưởng nhóm trước khi rời nhóm.",
+          input: "select",
+          inputOptions,
+          inputPlaceholder: "Chọn thành viên",
+          showCancelButton: true,
+          confirmButtonText: "Rời nhóm",
+          cancelButtonText: "Hủy",
+          confirmButtonColor: "#2563eb",
+          inputValidator: (value) => value ? undefined : "Vui lòng chọn người nhận chức trưởng nhóm."
+        });
+
+        if (!result.isConfirmed) return;
+        payload = { transferLeaderId: Number(result.value) };
+      } else {
+        const result = await Swal.fire({
+          title: "Rời nhóm?",
+          text: "Bạn sẽ trở về trạng thái tìm nhóm sau khi rời.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Rời nhóm",
+          cancelButtonText: "Hủy",
+          confirmButtonColor: "#2563eb",
+          cancelButtonColor: "#ef4444"
+        });
+
+        if (!result.isConfirmed) return;
+      }
+
+      await api.leaveTeam(team.id, payload);
+      await loadBase();
+      await loadStudentsForCurrentFilters();
+      Swal.fire({
+        title: "Đã rời nhóm",
+        text: "Thông tin nhóm của bạn đã được cập nhật.",
+        icon: "success",
+        confirmButtonColor: "#2563eb"
+      });
+    } catch (err) {
+      Swal.fire({
+        title: "Không thể rời nhóm",
+        text: err.message,
+        icon: "error",
+        confirmButtonColor: "#ef4444"
+      });
+    }
+  }
+
+  async function handleDeleteTeam(team) {
+    try {
+      const result = await Swal.fire({
+        title: "Xóa nhóm?",
+        text: `Nhóm "${team.name}" sẽ bị xóa và các thành viên sẽ trở về trạng thái tìm nhóm.`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Xóa nhóm",
+        cancelButtonText: "Hủy",
+        confirmButtonColor: "#dc2626",
+        cancelButtonColor: "#64748b"
+      });
+
+      if (!result.isConfirmed) return;
+
+      await api.deleteTeam(team.id);
+      await loadBase();
+      await loadStudentsForCurrentFilters();
+      Swal.fire({
+        title: "Đã xóa nhóm",
+        text: "Nhóm đã được xóa thành công.",
+        icon: "success",
+        confirmButtonColor: "#2563eb"
+      });
+    } catch (err) {
+      Swal.fire({
+        title: "Không thể xóa nhóm",
+        text: err.message,
+        icon: "error",
+        confirmButtonColor: "#ef4444"
+      });
+    }
+  }
+
   async function handleUpdateJoinRequestStatus(requestId, status) {
     try {
       await api.updateJoinRequestStatus(requestId, status);
@@ -352,6 +513,7 @@ export default function App() {
               joinRequests={joinRequests}
               onJoinGroup={setJoiningGroup}
               onInviteStudent={handleInviteStudent}
+              onViewStudent={handleViewStudent}
             />
           ) : null}
           {activePage === "my-team" ? (
@@ -364,6 +526,10 @@ export default function App() {
               onJoinGroup={setJoiningGroup}
               onUpdateJoinRequestStatus={handleUpdateJoinRequestStatus}
               onCancelJoinRequest={handleCancelJoinRequest}
+              onViewStudent={handleViewStudent}
+              onReviewMember={handleReviewMember}
+              onLeaveTeam={handleLeaveTeam}
+              onDeleteTeam={handleDeleteTeam}
             />
           ) : null}
           {activePage === "create-team" && profile && profile.status !== "IN_TEAM" ? <CreateTeamPage profile={profile} onCancel={() => setActivePage("my-team")} onCreated={refreshAfterTeamCreated} /> : null}
@@ -372,6 +538,7 @@ export default function App() {
       </div>
 
       {joiningGroup ? <JoinCommitmentModal group={joiningGroup} profile={profile} onSubmit={submitJoinRequest} onClose={() => setJoiningGroup(null)} /> : null}
+      {selectedStudent ? <StudentDetailModal student={selectedStudent} onClose={() => setSelectedStudent(null)} /> : null}
     </div>
   );
 }

@@ -3,12 +3,22 @@ import React from "react";
 import { statusLabel } from "../utils/status.js";
 import Badge from "./Badge.jsx";
 
-export default function StudentCard({ student, currentStudentId, onInvite }) {
+export default function StudentCard({ student, currentStudentId, onInvite, onView }) {
   const isSelf = student.id === currentStudentId;
   const canInvite = student.status === "LOOKING" && !isSelf;
+  const rating = Number(student.rating ?? 5);
+  const ratingText = Number.isInteger(rating) ? rating.toFixed(0) : rating.toFixed(1);
 
   return (
-    <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+    <article
+      className="flex h-full cursor-pointer flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-within:ring-2 focus-within:ring-blue-500"
+      role="button"
+      tabIndex={0}
+      onClick={() => onView?.(student)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") onView?.(student);
+      }}
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <img src={student.avatar} alt={student.name} className="h-14 w-14 shrink-0 rounded-full object-cover ring-2 ring-slate-100" />
@@ -16,7 +26,7 @@ export default function StudentCard({ student, currentStudentId, onInvite }) {
             <h3 className="truncate text-sm font-bold text-slate-950">{student.name}</h3>
             <p className="text-xs text-slate-500">{student.studentCode}</p>
             <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-600">
-              <span className="flex items-center gap-1 text-amber-600"><Star size={14} fill="currentColor" /> {student.rating}</span>
+              <span className="flex items-center gap-1 text-amber-600"><Star size={14} fill="currentColor" /> {ratingText}</span>
               <span className="flex items-center gap-1"><Target size={14} /> {student.targetGrade}</span>
               <span className="flex items-center gap-1"><Clock3 size={14} /> {student.commitmentHours}</span>
             </div>
@@ -32,7 +42,10 @@ export default function StudentCard({ student, currentStudentId, onInvite }) {
       <p className="mt-4 min-h-12 line-clamp-2 text-sm leading-6 text-slate-600">{student.bio}</p>
       <button
         type="button"
-        onClick={() => onInvite?.(student)}
+        onClick={(event) => {
+          event.stopPropagation();
+          onInvite?.(student);
+        }}
         disabled={!canInvite}
         className={`mt-auto inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl text-sm font-bold shadow-sm ${
           canInvite

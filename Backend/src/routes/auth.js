@@ -62,6 +62,7 @@ router.post("/register", async (req, res, next) => {
       rating: 5.0,
       ratingCount: 0,
       skills: [],
+      reviews: [],
       bio: "Muốn tìm nhóm học tập phù hợp, có mục tiêu rõ ràng và làm việc nghiêm túc."
     };
 

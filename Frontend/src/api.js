@@ -36,8 +36,11 @@ export const api = {
   getStudents: (params) => request(`/students${toQuery(params)}`),
   getStudent: (id) => request(`/students/${id}`),
   updateStudent: (id, payload) => request(`/students/${id}`, { method: "PUT", body: JSON.stringify(payload) }),
+  createStudentReview: (id, payload) => request(`/students/${id}/reviews`, { method: "POST", body: JSON.stringify(payload) }),
   getTeams: () => request("/teams"),
   createTeam: (payload) => request("/teams", { method: "POST", body: JSON.stringify(payload) }),
+  leaveTeam: (teamId, payload = {}) => request(`/teams/${teamId}/leave`, { method: "PATCH", body: JSON.stringify(payload) }),
+  deleteTeam: (teamId) => request(`/teams/${teamId}`, { method: "DELETE" }),
   getJoinRequests: (params) => request(`/teams/join-requests${toQuery(params)}`),
   createJoinRequest: (teamId, payload) =>
     request(`/teams/${teamId}/join-requests`, { method: "POST", body: JSON.stringify(payload) }),

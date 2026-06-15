@@ -25,6 +25,10 @@ const updateJoinRequestStatusSchema = z.object({
   status: z.enum(["PENDING", "APPROVED", "REJECTED"])
 });
 
+const leaveTeamSchema = z.object({
+  transferLeaderId: z.coerce.number().int().positive().optional()
+});
+
 router.get("/", async (_req, res, next) => {
   try {
     const data = await readStore();
@@ -148,6 +152,82 @@ router.post("/:id/join-requests", async (req, res, next) => {
     }
 
     res.status(201).json({ ...joinRequest, team: serializeTeam(team, data.students), student });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.patch("/:id/leave", requireAuth, async (req, res, next) => {
+  try {
+    const payload = leaveTeamSchema.parse(req.body);
+    const data = await readStore();
+    const teamId = Number(req.params.id);
+    const teamIndex = data.teams.findIndex((item) => item.id === teamId);
+
+    if (teamIndex === -1) return res.status(404).json({ message: "Team not found" });
+
+    const team = data.teams[teamIndex];
+    const student = data.students.find((item) => item.id === req.studentId);
+
+    if (!team.memberIds.includes(req.studentId)) {
+      return res.status(403).json({ message: "Bạn không phải là thành viên của nhóm này." });
+    }
+
+    const isLeader = team.leaderId === req.studentId;
+    const remainingMemberIds = team.memberIds.filter((id) => id !== req.studentId);
+
+    if (isLeader && remainingMemberIds.length > 0) {
+      if (!payload.transferLeaderId) {
+        return res.status(400).json({ message: "Trưởng nhóm cần chọn người nhận chức trưởng nhóm trước khi rời nhóm." });
+      }
+
+      if (!remainingMemberIds.includes(payload.transferLeaderId)) {
+        return res.status(400).json({ message: "Người nhận chức trưởng nhóm phải là thành viên còn lại trong nhóm." });
+      }
+
+      team.leaderId = payload.transferLeaderId;
+    }
+
+    team.memberIds = remainingMemberIds;
+    if (student) student.status = "LOOKING";
+
+    if (!team.memberIds.length) {
+      data.teams.splice(teamIndex, 1);
+      data.joinRequests = data.joinRequests.filter((request) => request.teamId !== teamId);
+      await writeStore(data);
+      return res.json({ message: "Bạn đã rời nhóm. Nhóm không còn thành viên nên đã được xóa.", team: null });
+    }
+
+    await writeStore(data);
+    res.json(serializeTeam(team, data.students));
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/:id", requireAuth, async (req, res, next) => {
+  try {
+    const data = await readStore();
+    const teamId = Number(req.params.id);
+    const teamIndex = data.teams.findIndex((item) => item.id === teamId);
+
+    if (teamIndex === -1) return res.status(404).json({ message: "Team not found" });
+
+    const team = data.teams[teamIndex];
+    if (team.leaderId !== req.studentId) {
+      return res.status(403).json({ message: "Chỉ trưởng nhóm mới có thể xóa nhóm." });
+    }
+
+    for (const memberId of team.memberIds) {
+      const member = data.students.find((student) => student.id === memberId);
+      if (member) member.status = "LOOKING";
+    }
+
+    data.teams.splice(teamIndex, 1);
+    data.joinRequests = data.joinRequests.filter((request) => request.teamId !== teamId);
+    await writeStore(data);
+
+    res.json({ message: "Đã xóa nhóm thành công." });
   } catch (error) {
     next(error);
   }

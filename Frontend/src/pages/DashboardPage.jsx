@@ -8,7 +8,7 @@ import StudentCard from "../components/StudentCard.jsx";
 const studentsPerPage = 8;
 const groupsPerPage = 3;
 
-export default function DashboardPage({ classroom, students, teams, filters, setFilters, currentStudentId, isStudentInTeam = false, joinRequests = [], onJoinGroup, onInviteStudent }) {
+export default function DashboardPage({ classroom, students, teams, filters, setFilters, currentStudentId, isStudentInTeam = false, joinRequests = [], onJoinGroup, onInviteStudent, onViewStudent }) {
   const stats = classroom?.stats ?? {};
   const [page, setPage] = useState(1);
   const [groupPage, setGroupPage] = useState(1);
@@ -59,7 +59,15 @@ export default function DashboardPage({ classroom, students, teams, filters, set
             </div>
             <Filters filters={filters} setFilters={setFilters} />
             <div className="mt-5 grid gap-5 md:grid-cols-2">
-              {visibleStudents.map((student) => <StudentCard key={student.id} student={student} currentStudentId={currentStudentId} onInvite={onInviteStudent} />)}
+              {visibleStudents.map((student) => (
+                <StudentCard
+                  key={student.id}
+                  student={student}
+                  currentStudentId={currentStudentId}
+                  onInvite={onInviteStudent}
+                  onView={onViewStudent}
+                />
+              ))}
             </div>
             <div className="mt-6 flex flex-col items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm sm:flex-row">
               <p className="text-sm font-medium text-slate-500">

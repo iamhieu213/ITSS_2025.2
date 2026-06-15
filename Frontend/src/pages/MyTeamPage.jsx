@@ -1,4 +1,4 @@
-import { Check, Clock3, Mail, Search, ShieldCheck, Target, UserPlus, Users, X, Crown, ClipboardList, Sparkles } from "lucide-react";
+import { Check, Clock3, Mail, Search, ShieldCheck, Target, UserPlus, Users, X, Crown, ClipboardList, Sparkles, Star, LogOut, Trash2, MessageSquarePlus } from "lucide-react";
 import React from "react";
 import Badge from "../components/Badge.jsx";
 import GroupCard from "../components/GroupCard.jsx";
@@ -122,7 +122,7 @@ function RequestList({ title, subtitle, requests, reviewerMode, onUpdateJoinRequ
   );
 }
 
-export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTeam, onCreateTeam, onJoinGroup, onUpdateJoinRequestStatus, onCancelJoinRequest }) {
+export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTeam, onCreateTeam, onJoinGroup, onUpdateJoinRequestStatus, onCancelJoinRequest, onViewStudent, onReviewMember, onLeaveTeam, onDeleteTeam }) {
   const myTeam = profile?.status === "IN_TEAM"
     ? teams.find((team) => team.members?.some((member) => member.id === profile?.id))
     : null;
@@ -130,6 +130,7 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
   const suggestedTeams = teams.slice(0, 3);
   
   const progressPercent = myTeam ? Math.round(((myTeam.members?.length ?? 0) / myTeam.maxMembers) * 100) : 0;
+  const isCurrentUserLeader = myTeam?.leaderId === profile?.id;
 
   return (
     <main className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6 lg:px-8">
@@ -181,6 +182,27 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
             </div>
           </div>
 
+          <div className="flex flex-wrap items-center justify-end gap-3">
+            <button
+              type="button"
+              onClick={() => onLeaveTeam?.(myTeam)}
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50"
+            >
+              <LogOut size={16} />
+              Rời nhóm
+            </button>
+            {isCurrentUserLeader ? (
+              <button
+                type="button"
+                onClick={() => onDeleteTeam?.(myTeam)}
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-red-600 px-4 text-sm font-bold text-white shadow-sm transition hover:bg-red-700"
+              >
+                <Trash2 size={16} />
+                Xóa nhóm
+              </button>
+            ) : null}
+          </div>
+
           {/* Two Column details */}
           <div className="grid gap-8 lg:grid-cols-12">
             {/* Left side: Members List */}
@@ -194,11 +216,19 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
                 {myTeam.members?.map((member) => {
                   const isLeader = member.id === myTeam.leaderId;
                   const isCurrentUser = member.id === profile?.id;
+                  const memberRating = Number(member.rating ?? 5);
+                  const memberRatingText = Number.isInteger(memberRating) ? memberRating.toFixed(0) : memberRating.toFixed(1);
                   
                   return (
                     <article 
                       key={member.id} 
-                      className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-slate-300"
+                      className="group relative cursor-pointer overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-slate-300"
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => onViewStudent?.(member)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") onViewStudent?.(member);
+                      }}
                     >
                       {/* Top Accent line */}
                       <div className={`absolute top-0 left-0 right-0 h-1.5 ${isLeader ? 'bg-amber-500' : isCurrentUser ? 'bg-blue-600' : 'bg-slate-200'}`}></div>
@@ -234,6 +264,7 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
                           <a 
                             href={`mailto:${member.email}`} 
                             className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-blue-600 transition mt-2 truncate w-full"
+                            onClick={(event) => event.stopPropagation()}
                           >
                             <Mail size={12} />
                             {member.email}
@@ -242,7 +273,7 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
                       </div>
                       
                       {/* Member stats/details */}
-                      <div className="mt-4 grid grid-cols-2 gap-2 rounded-xl bg-slate-50 p-3 text-xs text-slate-600">
+                      <div className="mt-4 grid grid-cols-3 gap-2 rounded-xl bg-slate-50 p-3 text-xs text-slate-600">
                         <div>
                           <span className="block text-[10px] text-slate-400 font-semibold uppercase">Mục tiêu</span>
                           <span className="font-bold text-slate-800">{member.targetGrade}</span>
@@ -250,6 +281,13 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
                         <div>
                           <span className="block text-[10px] text-slate-400 font-semibold uppercase">Cam kết</span>
                           <span className="font-bold text-slate-800">{member.commitmentHours}</span>
+                        </div>
+                        <div>
+                          <span className="block text-[10px] text-slate-400 font-semibold uppercase">Đánh giá</span>
+                          <span className="inline-flex items-center gap-1 font-bold text-amber-600">
+                            <Star size={13} fill="currentColor" />
+                            {memberRatingText}
+                          </span>
                         </div>
                       </div>
 
@@ -264,6 +302,20 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
                           </span>
                         ))}
                       </div>
+
+                      {!isCurrentUser ? (
+                        <button
+                          type="button"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            onReviewMember?.(member);
+                          }}
+                          className="mt-4 inline-flex h-9 w-full items-center justify-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 text-xs font-bold text-amber-700 transition hover:bg-amber-100"
+                        >
+                          <MessageSquarePlus size={15} />
+                          Đánh giá thành viên
+                        </button>
+                      ) : null}
 
                       {member.bio && (
                         <p className="mt-4 border-t border-slate-100 pt-3 text-xs leading-relaxed text-slate-500 italic line-clamp-2">

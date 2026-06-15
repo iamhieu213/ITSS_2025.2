@@ -288,10 +288,11 @@ function createGeneratedStudents() {
       targetGrade: goals[index % goals.length],
       commitmentHours: `${8 + (index % 7) * 2}h/tuần`,
       status: index < 45 ? "IN_TEAM" : "LOOKING",
-      rating: Number((4 + (index % 10) / 10).toFixed(1)),
-      ratingCount: 2 + (index % 8),
+      rating: 5,
+      ratingCount: 0,
       skills: skillSets[index % skillSets.length],
-      bio: "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc."
+      bio: "Muon tim nhom hoc tap phu hop, co muc tieu ro rang va lam viec nghiem tuc.",
+      reviews: []
     };
   });
 }
@@ -335,8 +336,37 @@ function teamsMatchStudentStatuses(data) {
   return true;
 }
 
+function normalizeStudentReviews(data) {
+  let modified = false;
+
+  for (const student of data.students) {
+    if (!Array.isArray(student.reviews)) {
+      student.reviews = [];
+      modified = true;
+    }
+
+    const ratingCount = student.reviews.length;
+    const rating = ratingCount
+      ? Number((student.reviews.reduce((sum, review) => sum + Number(review.rating ?? 0), 0) / ratingCount).toFixed(1))
+      : 5;
+
+    if (student.rating !== rating) {
+      student.rating = rating;
+      modified = true;
+    }
+
+    if (student.ratingCount !== ratingCount) {
+      student.ratingCount = ratingCount;
+      modified = true;
+    }
+  }
+
+  return modified;
+}
+
 function normalizeSeedData(data) {
-  if (teamsMatchStudentStatuses(data)) return data;
+  const reviewsModified = normalizeStudentReviews(data);
+  if (teamsMatchStudentStatuses(data)) return reviewsModified ? { ...data } : data;
 
   const teams = createSeedTeams(data.students);
   const teamIds = new Set(teams.map((team) => team.id));
@@ -353,6 +383,7 @@ initialData.students = [
   ...createGeneratedStudents()
 ];
 initialData.teams = createSeedTeams(initialData.students);
+normalizeStudentReviews(initialData);
 
 async function ensureDataFile() {
   await mkdir(dataDir, { recursive: true });
