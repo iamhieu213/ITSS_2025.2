@@ -14,12 +14,22 @@ function requestStatusLabel(status) {
   return labels[status] ?? status;
 }
 
-function RequestedTeamCard({ request, reviewerMode = false, onUpdateStatus, onCancelJoinRequest }) {
+function RequestedTeamCard({ request, reviewerMode = false, onUpdateStatus, onCancelJoinRequest, onViewStudent }) {
   const team = request.team;
   if (!team) return null;
 
   return (
-    <article className={`rounded-2xl border bg-white p-5 shadow-sm transition-all duration-300 hover:shadow-md ${reviewerMode ? 'border-indigo-100 hover:border-indigo-200' : 'border-blue-100 hover:border-blue-200'}`}>
+    <article
+      className={`rounded-2xl border bg-white p-5 shadow-sm transition-all duration-300 hover:shadow-md ${
+        reviewerMode
+          ? 'border-indigo-100 hover:border-indigo-200 cursor-pointer'
+          : 'border-blue-100 hover:border-blue-200'
+      }`}
+      onClick={reviewerMode && request.student ? () => onViewStudent?.(request.student) : undefined}
+      role={reviewerMode && request.student ? "button" : undefined}
+      tabIndex={reviewerMode && request.student ? 0 : undefined}
+      onKeyDown={reviewerMode && request.student ? (e) => { if (e.key === "Enter" || e.key === " ") onViewStudent?.(request.student); } : undefined}
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           {reviewerMode ? (
@@ -38,16 +48,16 @@ function RequestedTeamCard({ request, reviewerMode = false, onUpdateStatus, onCa
           )}
         </div>
         <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shrink-0 ${
-          request.status === "APPROVED" 
-            ? "bg-emerald-50 text-emerald-700 border border-emerald-100" 
-            : request.status === "REJECTED" 
-            ? "bg-red-50 text-red-700 border border-red-100" 
+          request.status === "APPROVED"
+            ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
+            : request.status === "REJECTED"
+            ? "bg-red-50 text-red-700 border border-red-100"
             : "bg-amber-50 text-amber-700 border border-amber-100"
         }`}>
           {requestStatusLabel(request.status)}
         </span>
       </div>
-      
+
       {reviewerMode ? (
         <p className="mt-3 text-xs leading-relaxed text-slate-600 bg-slate-50 rounded-xl px-3 py-2.5 italic">
           "{request.message || "Không có lời nhắn"}"
@@ -67,7 +77,7 @@ function RequestedTeamCard({ request, reviewerMode = false, onUpdateStatus, onCa
         <div className="mt-4 grid gap-2 grid-cols-2">
           <button
             type="button"
-            onClick={() => onUpdateStatus(request.id, "APPROVED")}
+            onClick={(e) => { e.stopPropagation(); onUpdateStatus(request.id, "APPROVED"); }}
             className="inline-flex h-9 items-center justify-center gap-1 rounded-xl bg-emerald-600 px-3 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 active:scale-95 transition"
           >
             <Check size={14} />
@@ -75,7 +85,7 @@ function RequestedTeamCard({ request, reviewerMode = false, onUpdateStatus, onCa
           </button>
           <button
             type="button"
-            onClick={() => onUpdateStatus(request.id, "REJECTED")}
+            onClick={(e) => { e.stopPropagation(); onUpdateStatus(request.id, "REJECTED"); }}
             className="inline-flex h-9 items-center justify-center gap-1 rounded-xl border border-red-200 bg-red-50 px-3 text-xs font-bold text-red-700 hover:bg-red-100 active:scale-95 transition"
           >
             <X size={14} />
@@ -83,7 +93,7 @@ function RequestedTeamCard({ request, reviewerMode = false, onUpdateStatus, onCa
           </button>
         </div>
       ) : null}
-      
+
       {!reviewerMode && request.status !== "APPROVED" ? (
         <button
           type="button"
@@ -98,7 +108,7 @@ function RequestedTeamCard({ request, reviewerMode = false, onUpdateStatus, onCa
   );
 }
 
-function RequestList({ title, subtitle, requests, reviewerMode, onUpdateJoinRequestStatus, onCancelJoinRequest }) {
+function RequestList({ title, subtitle, requests, reviewerMode, onUpdateJoinRequestStatus, onCancelJoinRequest, onViewStudent }) {
   if (!requests.length) return null;
 
   return (
@@ -115,6 +125,7 @@ function RequestList({ title, subtitle, requests, reviewerMode, onUpdateJoinRequ
             reviewerMode={reviewerMode}
             onUpdateStatus={onUpdateJoinRequestStatus}
             onCancelJoinRequest={onCancelJoinRequest}
+            onViewStudent={onViewStudent}
           />
         ))}
       </div>
@@ -376,14 +387,15 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
 
           {/* Join Requests for Leader */}
           {profile?.id === myTeam.leaderId && (
-            <RequestList
-              title="Yêu cầu xin vào nhóm của bạn"
-              subtitle="Dùng chức năng duyệt hoặc từ chối để cập nhật thành viên nhóm."
-              requests={joinRequests}
-              reviewerMode
-              onUpdateJoinRequestStatus={onUpdateJoinRequestStatus}
-              onCancelJoinRequest={onCancelJoinRequest}
-            />
+          <RequestList
+            title="Yêu cầu xin vào nhóm của bạn"
+            subtitle="Dùng chức năng duyệt hoặc từ chối để cập nhật thành viên nhóm."
+            requests={joinRequests}
+            reviewerMode
+            onUpdateJoinRequestStatus={onUpdateJoinRequestStatus}
+            onCancelJoinRequest={onCancelJoinRequest}
+            onViewStudent={onViewStudent}
+          />
           )}
         </div>
       ) : (
