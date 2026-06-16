@@ -2,7 +2,7 @@ import { Github, Globe, Linkedin, MessageSquare, Pencil, Plus, Star, X } from "l
 import React, { useEffect, useState } from "react";
 import { api } from "../api.js";
 import Badge from "../components/Badge.jsx";
-import { skillSuggestions } from "../constants/studymates.js";
+import { goals, skillSuggestions } from "../constants/studymates.js";
 
 export default function ProfilePage({ profile, onSaved }) {
   const [form, setForm] = useState(null);
@@ -115,7 +115,9 @@ export default function ProfilePage({ profile, onSaved }) {
               <label className="grid gap-2 text-sm font-semibold text-slate-900">
                 Mục tiêu học tập
                 <select value={form.targetGrade} onChange={(event) => setForm({ ...form, targetGrade: event.target.value })} className="h-11 rounded-xl border border-slate-200 px-3 text-sm font-normal shadow-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100">
-                  <option>A+</option><option>A</option><option>B+</option>
+                  {goals.filter((g) => g.value !== "ALL_GOALS").map((g) => (
+                    <option key={g.value} value={g.value}>{g.label}</option>
+                  ))}
                 </select>
               </label>
               <label className="grid gap-2 text-sm font-semibold text-slate-900">
