@@ -496,45 +496,43 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-950">
-      <div className="flex min-h-screen">
-        <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} activePage={activePage} onNavigate={setActivePage} profile={profile} onLogout={handleLogout} />
-        <div className="min-w-0 flex-1">
-          <Topbar classroom={classroom} onMenu={() => setSidebarOpen(true)} />
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} activePage={activePage} onNavigate={setActivePage} profile={profile} onLogout={handleLogout} />
+      <div className="min-w-0 lg:pl-72">
+        <Topbar classroom={classroom} onMenu={() => setSidebarOpen(true)} />
 
-          {activePage === "dashboard" ? (
-            <DashboardPage
-              classroom={classroom}
-              students={students}
-              teams={teams}
-              filters={filters}
-              setFilters={setFilters}
-              currentStudentId={profile?.id}
-              isStudentInTeam={profile?.status === "IN_TEAM"}
-              joinRequests={joinRequests}
-              onJoinGroup={setJoiningGroup}
-              onInviteStudent={handleInviteStudent}
-              onViewStudent={handleViewStudent}
-            />
-          ) : null}
-          {activePage === "my-team" ? (
-            <MyTeamPage
-              profile={profile}
-              teams={teams}
-              joinRequests={joinRequests}
-              onFindTeam={() => setActivePage("dashboard")}
-              onCreateTeam={goToCreateTeam}
-              onJoinGroup={setJoiningGroup}
-              onUpdateJoinRequestStatus={handleUpdateJoinRequestStatus}
-              onCancelJoinRequest={handleCancelJoinRequest}
-              onViewStudent={handleViewStudent}
-              onReviewMember={handleReviewMember}
-              onLeaveTeam={handleLeaveTeam}
-              onDeleteTeam={handleDeleteTeam}
-            />
-          ) : null}
-          {activePage === "create-team" && profile && profile.status !== "IN_TEAM" ? <CreateTeamPage profile={profile} onCancel={() => setActivePage("my-team")} onCreated={refreshAfterTeamCreated} /> : null}
-          {activePage === "profile" ? <ProfilePage profile={profile} onSaved={handleProfileSaved} /> : null}
-        </div>
+        {activePage === "dashboard" ? (
+          <DashboardPage
+            classroom={classroom}
+            students={students}
+            teams={teams}
+            filters={filters}
+            setFilters={setFilters}
+            currentStudentId={profile?.id}
+            isStudentInTeam={profile?.status === "IN_TEAM"}
+            joinRequests={joinRequests}
+            onJoinGroup={setJoiningGroup}
+            onInviteStudent={handleInviteStudent}
+            onViewStudent={handleViewStudent}
+          />
+        ) : null}
+        {activePage === "my-team" ? (
+          <MyTeamPage
+            profile={profile}
+            teams={teams}
+            joinRequests={joinRequests}
+            onFindTeam={() => setActivePage("dashboard")}
+            onCreateTeam={goToCreateTeam}
+            onJoinGroup={setJoiningGroup}
+            onUpdateJoinRequestStatus={handleUpdateJoinRequestStatus}
+            onCancelJoinRequest={handleCancelJoinRequest}
+            onViewStudent={handleViewStudent}
+            onReviewMember={handleReviewMember}
+            onLeaveTeam={handleLeaveTeam}
+            onDeleteTeam={handleDeleteTeam}
+          />
+        ) : null}
+        {activePage === "create-team" && profile && profile.status !== "IN_TEAM" ? <CreateTeamPage profile={profile} onCancel={() => setActivePage("my-team")} onCreated={refreshAfterTeamCreated} /> : null}
+        {activePage === "profile" ? <ProfilePage profile={profile} onSaved={handleProfileSaved} /> : null}
       </div>
 
       {joiningGroup ? <JoinCommitmentModal group={joiningGroup} profile={profile} onSubmit={submitJoinRequest} onClose={() => setJoiningGroup(null)} /> : null}
