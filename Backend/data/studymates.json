@@ -37,7 +37,7 @@
       "avatar": "https://i.pravatar.cc/120?img=5",
       "targetGrade": "A+",
       "commitmentHours": "10h/tuần",
-      "status": "LOOKING",
+      "status": "IN_TEAM",
       "rating": 5,
       "ratingCount": 2,
       "skills": [
@@ -1589,8 +1589,40 @@
         50,
         51
       ]
+    },
+    {
+      "id": 11,
+      "name": "gsadgas",
+      "description": "sgsdgsd",
+      "targetGrade": "A+",
+      "maxMembers": 5,
+      "status": "RECRUITING",
+      "skills": [
+        "Trách nhiệm",
+        "Chủ động"
+      ],
+      "commitments": [
+        "Họp đúng giờ",
+        "Hoàn thành task đúng hạn",
+        "Chủ động trao đổi",
+        "Tôn trọng thành viên"
+      ],
+      "leaderId": 2,
+      "memberIds": [
+        2
+      ],
+      "createdAt": "2026-06-17T16:56:05.935Z"
     }
   ],
   "joinRequests": [],
-  "invitations": []
+  "invitations": [
+    {
+      "id": 1,
+      "teamId": 11,
+      "studentId": 62,
+      "status": "DECLINED",
+      "createdAt": "2026-06-17T16:56:37.507Z",
+      "respondedAt": "2026-06-17T16:56:46.126Z"
+    }
+  ]
 }

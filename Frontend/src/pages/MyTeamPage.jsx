@@ -1,4 +1,4 @@
-import { Check, Clock3, Mail, Search, ShieldCheck, Target, UserPlus, Users, X, Crown, ClipboardList, Sparkles, Star, LogOut, Trash2, MessageSquarePlus } from "lucide-react";
+import { Check, Clock3, Mail, Search, ShieldCheck, Target, UserPlus, Users, X, Crown, ClipboardList, Sparkles, Star, LogOut, Trash2, MessageSquarePlus, Bell } from "lucide-react";
 import React from "react";
 import Badge from "../components/Badge.jsx";
 import GroupCard from "../components/GroupCard.jsx";
@@ -10,10 +10,19 @@ function requestStatusLabel(status) {
     APPROVED: "Đã được duyệt",
     REJECTED: "Đã từ chối"
   };
-
   return labels[status] ?? status;
 }
 
+function invitationStatusLabel(status) {
+  const labels = {
+    PENDING: "Đang chờ phản hồi",
+    ACCEPTED: "Đã chấp nhận",
+    DECLINED: "Đã từ chối"
+  };
+  return labels[status] ?? status;
+}
+
+// --- Card yêu cầu xin vào nhóm (join request) ---
 function RequestedTeamCard({ request, reviewerMode = false, onUpdateStatus, onCancelJoinRequest, onViewStudent }) {
   const team = request.team;
   if (!team) return null;
@@ -66,7 +75,6 @@ function RequestedTeamCard({ request, reviewerMode = false, onUpdateStatus, onCa
         <p className="mt-3 text-xs leading-relaxed text-slate-600 line-clamp-2">{team.description}</p>
       )}
 
-      {/* Skills */}
       <div className="mt-3 flex flex-wrap gap-1">
         {((reviewerMode ? request.student?.skills : team.skills) ?? []).map((skill) => (
           <span key={skill} className="rounded-lg bg-indigo-50 px-2 py-0.5 text-[10px] font-semibold text-indigo-700">{skill}</span>
@@ -108,6 +116,86 @@ function RequestedTeamCard({ request, reviewerMode = false, onUpdateStatus, onCa
   );
 }
 
+// --- Card lời mời từ trưởng nhóm ---
+function InvitationCard({ invitation, reviewerMode = false, onUpdateStatus, onViewStudent }) {
+  const team = invitation.team;
+  const student = invitation.student;
+
+  return (
+    <article
+      className={`rounded-2xl border bg-white p-5 shadow-sm transition-all duration-300 hover:shadow-md ${
+        reviewerMode
+          ? "border-violet-100 hover:border-violet-200 cursor-pointer"
+          : "border-emerald-100 hover:border-emerald-200"
+      }`}
+      onClick={reviewerMode && student ? () => onViewStudent?.(student) : undefined}
+      role={reviewerMode && student ? "button" : undefined}
+      tabIndex={reviewerMode && student ? 0 : undefined}
+      onKeyDown={reviewerMode && student ? (e) => { if (e.key === "Enter" || e.key === " ") onViewStudent?.(student); } : undefined}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-3">
+          {reviewerMode ? (
+            <>
+              <img src={student?.avatar} alt={student?.name} className="h-12 w-12 rounded-xl object-cover ring-2 ring-violet-50" />
+              <div className="min-w-0">
+                <h3 className="font-bold text-slate-900 text-sm truncate">{student?.name}</h3>
+                <p className="text-[11px] text-slate-500 font-semibold truncate">{student?.studentCode} • {student?.major}</p>
+              </div>
+            </>
+          ) : (
+            <div>
+              <h3 className="font-bold text-slate-900 text-sm">{team?.name}</h3>
+              <p className="mt-0.5 text-xs text-slate-500">Trưởng nhóm: {team?.leader?.name ?? "Chưa có"}</p>
+            </div>
+          )}
+        </div>
+        <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shrink-0 ${
+          invitation.status === "ACCEPTED"
+            ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
+            : invitation.status === "DECLINED"
+            ? "bg-red-50 text-red-700 border border-red-100"
+            : "bg-violet-50 text-violet-700 border border-violet-100"
+        }`}>
+          {invitationStatusLabel(invitation.status)}
+        </span>
+      </div>
+
+      {!reviewerMode && team?.description && (
+        <p className="mt-3 text-xs leading-relaxed text-slate-600 line-clamp-2">{team.description}</p>
+      )}
+
+      <div className="mt-3 flex flex-wrap gap-1">
+        {((reviewerMode ? student?.skills : team?.skills) ?? []).map((skill) => (
+          <span key={skill} className="rounded-lg bg-violet-50 px-2 py-0.5 text-[10px] font-semibold text-violet-700">{skill}</span>
+        ))}
+      </div>
+
+      {/* Người được mời: Chấp nhận / Từ chối */}
+      {!reviewerMode && invitation.status === "PENDING" ? (
+        <div className="mt-4 grid gap-2 grid-cols-2">
+          <button
+            type="button"
+            onClick={() => onUpdateStatus?.(invitation.id, "ACCEPTED")}
+            className="inline-flex h-9 items-center justify-center gap-1 rounded-xl bg-emerald-600 px-3 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 active:scale-95 transition"
+          >
+            <Check size={14} />
+            Chấp nhận
+          </button>
+          <button
+            type="button"
+            onClick={() => onUpdateStatus?.(invitation.id, "DECLINED")}
+            className="inline-flex h-9 items-center justify-center gap-1 rounded-xl border border-red-200 bg-red-50 px-3 text-xs font-bold text-red-700 hover:bg-red-100 active:scale-95 transition"
+          >
+            <X size={14} />
+            Từ chối
+          </button>
+        </div>
+      ) : null}
+    </article>
+  );
+}
+
 function RequestList({ title, subtitle, requests, reviewerMode, onUpdateJoinRequestStatus, onCancelJoinRequest, onViewStudent }) {
   if (!requests.length) return null;
 
@@ -133,7 +221,53 @@ function RequestList({ title, subtitle, requests, reviewerMode, onUpdateJoinRequ
   );
 }
 
-export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTeam, onCreateTeam, onJoinGroup, onUpdateJoinRequestStatus, onCancelJoinRequest, onViewStudent, onReviewMember, onLeaveTeam, onDeleteTeam }) {
+function InvitationList({ title, subtitle, invitations, reviewerMode = false, onUpdateInvitationStatus, onViewStudent }) {
+  if (!invitations.length) return null;
+
+  return (
+    <section className="mt-10">
+      <div className="border-b border-slate-200 pb-4">
+        <h2 className="flex items-center gap-2 text-2xl font-black tracking-normal text-slate-900">
+          {title}
+          {invitations.filter((i) => i.status === "PENDING").length > 0 && (
+            <span className="inline-flex items-center justify-center h-6 min-w-6 rounded-full bg-violet-600 px-1.5 text-xs font-bold text-white">
+              {invitations.filter((i) => i.status === "PENDING").length}
+            </span>
+          )}
+        </h2>
+        <p className="mt-1 text-xs text-slate-500">{subtitle}</p>
+      </div>
+      <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {invitations.map((invitation) => (
+          <InvitationCard
+            key={invitation.id}
+            invitation={invitation}
+            reviewerMode={reviewerMode}
+            onUpdateStatus={onUpdateInvitationStatus}
+            onViewStudent={onViewStudent}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export default function MyTeamPage({
+  profile,
+  teams,
+  joinRequests = [],
+  invitations = [],
+  onFindTeam,
+  onCreateTeam,
+  onJoinGroup,
+  onUpdateJoinRequestStatus,
+  onCancelJoinRequest,
+  onUpdateInvitationStatus,
+  onViewStudent,
+  onReviewMember,
+  onLeaveTeam,
+  onDeleteTeam
+}) {
   const myTeam = profile?.status === "IN_TEAM"
     ? teams.find((team) => team.members?.some((member) => member.id === profile?.id))
     : null;
@@ -143,13 +277,20 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
   const progressPercent = myTeam ? Math.round(((myTeam.members?.length ?? 0) / myTeam.maxMembers) * 100) : 0;
   const isCurrentUserLeader = myTeam?.leaderId === profile?.id;
 
+  // Phân tách lời mời: gửi đi (leader) và nhận được (student)
+  const sentInvitations = isCurrentUserLeader
+    ? invitations.filter((inv) => inv.team?.id === myTeam?.id)
+    : [];
+  const receivedInvitations = !myTeam
+    ? invitations.filter((inv) => inv.studentId === profile?.id)
+    : [];
+
   return (
     <main className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6 lg:px-8">
       {myTeam ? (
         <div className="space-y-10">
           {/* Hero Banner Section */}
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-700 via-indigo-850 to-purple-900 p-8 text-white shadow-xl">
-            {/* Background decorative elements */}
             <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl"></div>
             <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-indigo-500/20 blur-3xl"></div>
             
@@ -170,7 +311,6 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
                 <p className="max-w-2xl text-sm leading-relaxed text-indigo-100/90">{myTeam.description}</p>
               </div>
 
-              {/* Stats / Progress */}
               <div className="shrink-0 rounded-2xl bg-white/10 p-5 backdrop-blur-md border border-white/10 w-full md:w-64">
                 <span className="text-xs font-semibold text-indigo-200">Sĩ số nhóm</span>
                 <div className="mt-1 flex items-baseline gap-2">
@@ -241,11 +381,9 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
                         if (event.key === "Enter" || event.key === " ") onViewStudent?.(member);
                       }}
                     >
-                      {/* Top Accent line */}
                       <div className={`absolute top-0 left-0 right-0 h-1.5 ${isLeader ? 'bg-amber-500' : isCurrentUser ? 'bg-blue-600' : 'bg-slate-200'}`}></div>
                       
                       <div className="flex gap-4">
-                        {/* Avatar container */}
                         <div className="relative shrink-0">
                           <img 
                             src={member.avatar} 
@@ -283,7 +421,6 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
                         </div>
                       </div>
                       
-                      {/* Member stats/details */}
                       <div className="mt-4 grid grid-cols-3 gap-2 rounded-xl bg-slate-50 p-3 text-xs text-slate-600">
                         <div>
                           <span className="block text-[10px] text-slate-400 font-semibold uppercase">Mục tiêu</span>
@@ -302,7 +439,6 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
                         </div>
                       </div>
 
-                      {/* Skills */}
                       <div className="mt-4 flex flex-wrap gap-1">
                         {(member.skills ?? []).map((skill) => (
                           <span 
@@ -341,7 +477,6 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
 
             {/* Right side: Commitments and info */}
             <div className="lg:col-span-4 space-y-6">
-              {/* Commitments Card */}
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
                   <span className="grid h-8 w-8 place-items-center rounded-lg bg-indigo-50 text-indigo-600">
@@ -362,7 +497,6 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
                 </ul>
               </div>
 
-              {/* Skills Needed Card */}
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
                   <span className="grid h-8 w-8 place-items-center rounded-lg bg-blue-50 text-blue-600">
@@ -387,15 +521,26 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
 
           {/* Join Requests for Leader */}
           {profile?.id === myTeam.leaderId && (
-          <RequestList
-            title="Yêu cầu xin vào nhóm của bạn"
-            subtitle="Dùng chức năng duyệt hoặc từ chối để cập nhật thành viên nhóm."
-            requests={joinRequests}
-            reviewerMode
-            onUpdateJoinRequestStatus={onUpdateJoinRequestStatus}
-            onCancelJoinRequest={onCancelJoinRequest}
-            onViewStudent={onViewStudent}
-          />
+            <RequestList
+              title="Yêu cầu xin vào nhóm của bạn"
+              subtitle="Dùng chức năng duyệt hoặc từ chối để cập nhật thành viên nhóm."
+              requests={joinRequests}
+              reviewerMode
+              onUpdateJoinRequestStatus={onUpdateJoinRequestStatus}
+              onCancelJoinRequest={onCancelJoinRequest}
+              onViewStudent={onViewStudent}
+            />
+          )}
+
+          {/* Sent Invitations for Leader */}
+          {isCurrentUserLeader && sentInvitations.length > 0 && (
+            <InvitationList
+              title="Lời mời bạn đã gửi"
+              subtitle="Danh sách lời mời gia nhập nhóm bạn đã gửi cho sinh viên khác."
+              invitations={sentInvitations}
+              reviewerMode
+              onViewStudent={onViewStudent}
+            />
           )}
         </div>
       ) : (
@@ -421,6 +566,17 @@ export default function MyTeamPage({ profile, teams, joinRequests = [], onFindTe
               </button>
             </div>
           </section>
+
+          {/* Received Invitations for student without team */}
+          {receivedInvitations.length > 0 && (
+            <InvitationList
+              title="Lời mời vào nhóm"
+              subtitle="Các trưởng nhóm đã gửi lời mời cho bạn. Chấp nhận để gia nhập ngay."
+              invitations={receivedInvitations}
+              reviewerMode={false}
+              onUpdateInvitationStatus={onUpdateInvitationStatus}
+            />
+          )}
 
           <RequestList
             title="Nhóm bạn đã xin gia nhập"

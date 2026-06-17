@@ -55,6 +55,7 @@ export default function App() {
   const [teams, setTeams] = useState([]);
   const [profile, setProfile] = useState(null);
   const [joinRequests, setJoinRequests] = useState([]);
+  const [invitations, setInvitations] = useState([]);
   const [joiningGroup, setJoiningGroup] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [filters, setFilters] = useState(defaultFilters);
@@ -67,6 +68,13 @@ export default function App() {
     return api.getJoinRequests({ studentId: profileData.id });
   }
 
+  async function loadInvitationsForProfile(profileData) {
+    if (profileData.status === "IN_TEAM") {
+      return api.getInvitations({ leaderId: profileData.id });
+    }
+    return api.getInvitations({ studentId: profileData.id });
+  }
+
   async function loadBase() {
     if (!token) return;
     try {
@@ -75,11 +83,15 @@ export default function App() {
         api.getTeams(),
         api.getProfile()
       ]);
-      const requestData = await loadRequestsForProfile(profileData);
+      const [requestData, invitationData] = await Promise.all([
+        loadRequestsForProfile(profileData),
+        loadInvitationsForProfile(profileData)
+      ]);
       setClassroom(classroomData);
       setTeams(teamData);
       setProfile(profileData);
       setJoinRequests(requestData);
+      setInvitations(invitationData);
     } catch (err) {
       if (err.message.includes("Unauthorized") || err.message.includes("401") || err.message.includes("not found") || err.message.includes("404")) {
         handleLogout();
@@ -210,6 +222,96 @@ export default function App() {
     });
   }
 
+  // Tìm nhóm của mình: thử nhiều cách để đảm bảo tìm được dù data có dạng nào
+  const myTeam = profile?.status === "IN_TEAM"
+    ? teams.find((team) =>
+        team.leaderId === profile.id ||
+        team.memberIds?.includes(profile.id) ||
+        team.members?.some((m) => m.id === profile.id)
+      )
+    : null;
+  const isCurrentUserLeader = !!(myTeam && myTeam.leaderId === profile?.id);
+
+  async function handleInviteStudent(student) {
+    // Debug log: vùng dữ liệu tại thời điểm click
+    console.log("[Invite Debug]", {
+      profileId: profile?.id,
+      profileStatus: profile?.status,
+      myTeamId: myTeam?.id,
+      myTeamLeaderId: myTeam?.leaderId,
+      isCurrentUserLeader,
+      teamsCount: teams.length,
+      teams: teams.map(t => ({ id: t.id, leaderId: t.leaderId, memberIds: t.memberIds }))
+    });
+    if (!myTeam || !isCurrentUserLeader) {
+      Swal.fire({
+        title: "Không khả thi",
+        text: "Chỉ trưởng nhóm mới có thể mời thành viên.",
+        icon: "warning",
+        confirmButtonColor: "#eab308"
+      });
+      return;
+    }
+    if (student.id === profile?.id) {
+      Swal.fire({
+        title: "Không khả thi",
+        text: "Bạn không thể tự mời chính mình vào nhóm.",
+        icon: "warning",
+        confirmButtonColor: "#eab308"
+      });
+      return;
+    }
+    if (student.status !== "LOOKING") {
+      Swal.fire({
+        title: "Không khả thi",
+        text: `${student.name} đã có nhóm, không thể mời.`,
+        icon: "warning",
+        confirmButtonColor: "#eab308"
+      });
+      return;
+    }
+    try {
+      await api.createInvitation(myTeam.id, student.id);
+      await loadBase();
+      Swal.fire({
+        title: "Gửi lời mời thành công!",
+        text: `Đã gửi lời mời đến ${student.name}. Họ sẽ thấy lời mời trên trang Nhóm của tôi.`,
+        icon: "success",
+        confirmButtonColor: "#2563eb"
+      });
+    } catch (err) {
+      Swal.fire({
+        title: "Gửi lời mời thất bại",
+        text: err.message,
+        icon: "error",
+        confirmButtonColor: "#ef4444"
+      });
+    }
+  }
+
+  async function handleUpdateInvitationStatus(inviteId, status) {
+    try {
+      await api.updateInvitationStatus(inviteId, status);
+      await loadBase();
+      const isAccepted = status === "ACCEPTED";
+      Swal.fire({
+        title: isAccepted ? "Chấp nhận thành công!" : "Đã từ chối lời mời",
+        text: isAccepted
+          ? "Bạn đã gia nhập nhóm. Chào mừng!"
+          : "Bạn đã từ chối lời mời nhóm này.",
+        icon: isAccepted ? "success" : "info",
+        confirmButtonColor: "#2563eb"
+      });
+    } catch (err) {
+      Swal.fire({
+        title: "Lỗi xử lý",
+        text: err.message,
+        icon: "error",
+        confirmButtonColor: "#ef4444"
+      });
+    }
+  }
+
   function goToCreateTeam() {
     if (profile?.status === "IN_TEAM") {
       Swal.fire({
@@ -220,7 +322,6 @@ export default function App() {
       });
       return;
     }
-
     setActivePage("create-team");
   }
 
@@ -229,33 +330,6 @@ export default function App() {
     Toast.fire({
       icon: "success",
       title: "Đã lưu hồ sơ thành công!"
-    });
-  }
-
-  function handleInviteStudent(student) {
-    if (student.id === profile?.id) {
-      Swal.fire({
-        title: "Không khả thi",
-        text: "Bạn không thể tự mời chính mình vào nhóm.",
-        icon: "warning",
-        confirmButtonColor: "#eab308"
-      });
-      return;
-    }
-
-    if (student.status !== "LOOKING") {
-      Swal.fire({
-        title: "Không khả thi",
-        text: `${student.name} đã có nhóm, không thể mời.`,
-        icon: "warning",
-        confirmButtonColor: "#eab308"
-      });
-      return;
-    }
-
-    Toast.fire({
-      icon: "success",
-      title: `Đã gửi lời mời vào nhóm cho ${student.name}.`
     });
   }
 
@@ -509,6 +583,7 @@ export default function App() {
             setFilters={setFilters}
             currentStudentId={profile?.id}
             isStudentInTeam={profile?.status === "IN_TEAM"}
+            isCurrentUserLeader={isCurrentUserLeader}
             joinRequests={joinRequests}
             onJoinGroup={setJoiningGroup}
             onInviteStudent={handleInviteStudent}
@@ -520,11 +595,13 @@ export default function App() {
             profile={profile}
             teams={teams}
             joinRequests={joinRequests}
+            invitations={invitations}
             onFindTeam={() => setActivePage("dashboard")}
             onCreateTeam={goToCreateTeam}
             onJoinGroup={setJoiningGroup}
             onUpdateJoinRequestStatus={handleUpdateJoinRequestStatus}
             onCancelJoinRequest={handleCancelJoinRequest}
+            onUpdateInvitationStatus={handleUpdateInvitationStatus}
             onViewStudent={handleViewStudent}
             onReviewMember={handleReviewMember}
             onLeaveTeam={handleLeaveTeam}
