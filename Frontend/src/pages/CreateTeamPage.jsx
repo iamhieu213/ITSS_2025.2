@@ -34,7 +34,6 @@ export default function CreateTeamPage({ profile, onCreated, onCancel }) {
       <form onSubmit={submit} className="space-y-6">
         <div>
           <h2 className="text-2xl font-black text-slate-950">Tạo nhóm mới</h2>
-          <p className="mt-2 text-sm text-slate-500">Dữ liệu sẽ được gửi lên API `/api/teams`.</p>
         </div>
         <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="flex items-center gap-2 text-base font-black text-slate-950">

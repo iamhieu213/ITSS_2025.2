@@ -37,7 +37,7 @@
       "avatar": "https://i.pravatar.cc/120?img=5",
       "targetGrade": "A+",
       "commitmentHours": "10h/tuần",
-      "status": "LOOKING",
+      "status": "IN_TEAM",
       "rating": 5,
       "ratingCount": 2,
       "skills": [
@@ -1292,7 +1292,7 @@
       "avatar": "https://i.pravatar.cc/120?img=29",
       "targetGrade": "A",
       "commitmentHours": "8h/tuần",
-      "status": "IN_TEAM",
+      "status": "LOOKING",
       "rating": 5,
       "ratingCount": 0,
       "skills": [],
@@ -1592,18 +1592,14 @@
     },
     {
       "id": 11,
-      "name": "ITSS",
-      "description": "asdasdasdasd",
+      "name": "vdvsvbd",
+      "description": "sdvsdvsd",
       "targetGrade": "A+",
       "maxMembers": 5,
       "status": "RECRUITING",
       "skills": [
         "Trách nhiệm",
-        "Chủ động",
-        "Giao tiếp",
-        "Leadership",
-        "Teamwork",
-        "Hỗ trợ nhóm"
+        "Chủ động"
       ],
       "commitments": [
         "Họp đúng giờ",
@@ -1611,44 +1607,29 @@
         "Chủ động trao đổi",
         "Tôn trọng thành viên"
       ],
-      "leaderId": 62,
+      "leaderId": 2,
       "memberIds": [
-        61,
+        2,
         62
       ],
-      "createdAt": "2026-06-10T11:59:06.947Z"
+      "createdAt": "2026-06-16T16:16:53.756Z"
     }
   ],
   "joinRequests": [
     {
       "id": 1,
       "teamId": 11,
-      "studentId": 61,
-      "confirmedCommitments": [
-        "Họp đúng giờ",
-        "Hoàn thành task đúng hạn",
-        "Chủ động trao đổi",
-        "Tôn trọng thành viên"
-      ],
-      "message": "",
-      "status": "APPROVED",
-      "createdAt": "2026-06-10T12:00:04.499Z",
-      "reviewedAt": "2026-06-10T13:04:59.135Z"
-    },
-    {
-      "id": 2,
-      "teamId": 11,
       "studentId": 62,
       "confirmedCommitments": [
         "Tôn trọng thành viên",
         "Chủ động trao đổi",
-        "Hoàn thành task đúng hạn",
-        "Họp đúng giờ"
+        "Họp đúng giờ",
+        "Hoàn thành task đúng hạn"
       ],
       "message": "",
       "status": "APPROVED",
-      "createdAt": "2026-06-15T13:36:50.711Z",
-      "reviewedAt": "2026-06-15T13:36:56.062Z"
+      "createdAt": "2026-06-16T16:17:11.454Z",
+      "reviewedAt": "2026-06-16T16:17:31.006Z"
     }
   ]
 }
