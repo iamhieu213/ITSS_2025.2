@@ -37,7 +37,7 @@
       "avatar": "https://i.pravatar.cc/120?img=5",
       "targetGrade": "A+",
       "commitmentHours": "10h/tuần",
-      "status": "IN_TEAM",
+      "status": "LOOKING",
       "rating": 5,
       "ratingCount": 2,
       "skills": [
@@ -1309,7 +1309,7 @@
       "avatar": "https://i.pravatar.cc/120?img=60",
       "targetGrade": "A",
       "commitmentHours": "8h/tuần",
-      "status": "IN_TEAM",
+      "status": "LOOKING",
       "rating": 3,
       "ratingCount": 1,
       "skills": [],
@@ -1589,47 +1589,7 @@
         50,
         51
       ]
-    },
-    {
-      "id": 11,
-      "name": "vdvsvbd",
-      "description": "sdvsdvsd",
-      "targetGrade": "A+",
-      "maxMembers": 5,
-      "status": "RECRUITING",
-      "skills": [
-        "Trách nhiệm",
-        "Chủ động"
-      ],
-      "commitments": [
-        "Họp đúng giờ",
-        "Hoàn thành task đúng hạn",
-        "Chủ động trao đổi",
-        "Tôn trọng thành viên"
-      ],
-      "leaderId": 2,
-      "memberIds": [
-        2,
-        62
-      ],
-      "createdAt": "2026-06-16T16:16:53.756Z"
     }
   ],
-  "joinRequests": [
-    {
-      "id": 1,
-      "teamId": 11,
-      "studentId": 62,
-      "confirmedCommitments": [
-        "Tôn trọng thành viên",
-        "Chủ động trao đổi",
-        "Họp đúng giờ",
-        "Hoàn thành task đúng hạn"
-      ],
-      "message": "",
-      "status": "APPROVED",
-      "createdAt": "2026-06-16T16:17:11.454Z",
-      "reviewedAt": "2026-06-16T16:17:31.006Z"
-    }
-  ]
+  "joinRequests": []
 }

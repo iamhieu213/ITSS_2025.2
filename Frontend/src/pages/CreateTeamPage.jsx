@@ -6,6 +6,36 @@ import { defaultCommitments, skillSuggestions } from "../constants/studymates.js
 
 const targetGrades = ["A+", "A", "B+", "B", "C+", "C", "D+", "D", "F"];
 
+function validate(form) {
+  const errors = {};
+  const name = form.name.trim();
+  const description = form.description.trim();
+  const maxMembers = Number(form.maxMembers);
+  const commitments = form.commitments.split(",").map((s) => s.trim()).filter(Boolean);
+
+  if (!name) {
+    errors.name = "Tên nhóm không được để trống.";
+  } else if (name.length < 3) {
+    errors.name = "Tên nhóm phải có ít nhất 3 ký tự.";
+  }
+
+  if (!description) {
+    errors.description = "Mô tả không được để trống.";
+  } else if (description.length < 5) {
+    errors.description = "Mô tả phải có ít nhất 5 ký tự.";
+  }
+
+  if (isNaN(maxMembers) || !Number.isInteger(maxMembers) || maxMembers < 2 || maxMembers > 10) {
+    errors.maxMembers = "Số thành viên tối đa phải từ 2 đến 10.";
+  }
+
+  if (commitments.length === 0) {
+    errors.commitments = "Vui lòng nhập ít nhất một cam kết.";
+  }
+
+  return errors;
+}
+
 export default function CreateTeamPage({ profile, onCreated, onCancel }) {
   const [form, setForm] = useState({
     name: "",
@@ -16,15 +46,34 @@ export default function CreateTeamPage({ profile, onCreated, onCancel }) {
     commitments: defaultCommitments.join(", ")
   });
 
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+
+  function handleChange(field, value) {
+    const updated = { ...form, [field]: value };
+    setForm(updated);
+    // Xóa lỗi của field khi user bắt đầu sửa
+    if (errors[field]) {
+      const newErrors = { ...errors };
+      delete newErrors[field];
+      setErrors(newErrors);
+    }
+  }
 
   async function submit(event) {
     event.preventDefault();
+
+    const validationErrors = validate(form);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     setLoading(true);
     try {
       await api.createTeam({
-        name: form.name,
-        description: form.description,
+        name: form.name.trim(),
+        description: form.description.trim(),
         targetGrade: form.targetGrade,
         maxMembers: Number(form.maxMembers),
         skills: form.skills.split(",").map((item) => item.trim()).filter(Boolean),
@@ -46,7 +95,7 @@ export default function CreateTeamPage({ profile, onCreated, onCancel }) {
 
   return (
     <main className="mx-auto max-w-[960px] px-4 py-6 sm:px-6 lg:px-8">
-      <form onSubmit={submit} className="space-y-6">
+      <form onSubmit={submit} noValidate className="space-y-6">
         <div>
           <h2 className="text-2xl font-black text-slate-950">Tạo nhóm mới</h2>
         </div>
@@ -55,39 +104,81 @@ export default function CreateTeamPage({ profile, onCreated, onCancel }) {
             <BookOpen size={18} className="text-blue-600" /> Thông tin cơ bản
           </h3>
           <div className="mt-5 grid gap-4">
-            <input required value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} className="h-11 rounded-xl border border-slate-200 px-3 text-sm shadow-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100" placeholder="Tên nhóm" />
-            <textarea required value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} className="min-h-24 rounded-xl border border-slate-200 px-3 py-3 text-sm shadow-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100" placeholder="Mô tả nhóm" />
-            
-            <div className="grid gap-4 sm:grid-cols-2">
-              <select value={form.targetGrade} onChange={(event) => setForm({ ...form, targetGrade: event.target.value })} className="h-11 rounded-xl border border-slate-200 px-3 text-sm shadow-sm outline-none">
-                {targetGrades.map((grade) => (
-                  <option key={grade} value={grade}>{grade}</option>
-                ))}
-              </select>
-              <input type="number" min="2" max="10" value={form.maxMembers} onChange={(event) => setForm({ ...form, maxMembers: event.target.value })} className="h-11 rounded-xl border border-slate-200 px-3 text-sm shadow-sm outline-none" />
+
+            {/* Tên nhóm */}
+            <div className="grid gap-1">
+              <input
+                value={form.name}
+                onChange={(e) => handleChange("name", e.target.value)}
+                className={`h-11 rounded-xl border px-3 text-sm shadow-sm outline-none focus:ring-4 focus:ring-blue-100 ${errors.name ? "border-red-400 focus:border-red-400" : "border-slate-200 focus:border-blue-400"}`}
+                placeholder="Tên nhóm (ít nhất 3 ký tự)"
+              />
+              {errors.name && <p className="text-xs font-medium text-red-500 px-1">{errors.name}</p>}
             </div>
 
+            {/* Mô tả */}
+            <div className="grid gap-1">
+              <textarea
+                value={form.description}
+                onChange={(e) => handleChange("description", e.target.value)}
+                className={`min-h-24 rounded-xl border px-3 py-3 text-sm shadow-sm outline-none focus:ring-4 focus:ring-blue-100 ${errors.description ? "border-red-400 focus:border-red-400" : "border-slate-200 focus:border-blue-400"}`}
+                placeholder="Mô tả nhóm (ít nhất 5 ký tự)"
+              />
+              {errors.description && <p className="text-xs font-medium text-red-500 px-1">{errors.description}</p>}
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {/* Mục tiêu điểm */}
+              <div className="grid gap-1">
+                <label className="text-xs font-semibold text-slate-500 px-1">Mục tiêu điểm</label>
+                <select
+                  value={form.targetGrade}
+                  onChange={(e) => handleChange("targetGrade", e.target.value)}
+                  className="h-11 rounded-xl border border-slate-200 px-3 text-sm shadow-sm outline-none"
+                >
+                  {targetGrades.map((grade) => (
+                    <option key={grade} value={grade}>{grade}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Số thành viên tối đa */}
+              <div className="grid gap-1">
+                <label className="text-xs font-semibold text-slate-500 px-1">Số thành viên tối đa (2–10)</label>
+                <input
+                  type="number"
+                  min="2"
+                  max="10"
+                  value={form.maxMembers}
+                  onChange={(e) => handleChange("maxMembers", e.target.value)}
+                  className={`h-11 rounded-xl border px-3 text-sm shadow-sm outline-none focus:ring-4 focus:ring-blue-100 ${errors.maxMembers ? "border-red-400 focus:border-red-400" : "border-slate-200 focus:border-blue-400"}`}
+                />
+                {errors.maxMembers && <p className="text-xs font-medium text-red-500 px-1">{errors.maxMembers}</p>}
+              </div>
+            </div>
+
+            {/* Kỹ năng */}
             <div className="space-y-2">
-              <input value={form.skills} onChange={(event) => setForm({ ...form, skills: event.target.value })} className="h-11 w-full rounded-xl border border-slate-200 px-3 text-sm shadow-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100" placeholder="Kỹ năng, cách nhau bằng dấu phẩy" />
-              
+              <input
+                value={form.skills}
+                onChange={(e) => handleChange("skills", e.target.value)}
+                className="h-11 w-full rounded-xl border border-slate-200 px-3 text-sm shadow-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
+                placeholder="Kỹ năng, cách nhau bằng dấu phẩy"
+              />
               <div className="flex flex-wrap items-center gap-1.5 pt-1">
                 <span className="text-xs font-semibold text-slate-500 mr-1">Gợi ý:</span>
                 {skillSuggestions.map((skill) => {
                   const currentSkills = form.skills.split(",").map(s => s.trim()).filter(Boolean);
                   const isSelected = currentSkills.some(s => s.toLowerCase() === skill.toLowerCase());
-                  
                   return (
                     <button
                       key={skill}
                       type="button"
                       onClick={() => {
-                        let nextSkills;
-                        if (isSelected) {
-                          nextSkills = currentSkills.filter(s => s.toLowerCase() !== skill.toLowerCase());
-                        } else {
-                          nextSkills = [...currentSkills, skill];
-                        }
-                        setForm({ ...form, skills: nextSkills.join(", ") });
+                        const nextSkills = isSelected
+                          ? currentSkills.filter(s => s.toLowerCase() !== skill.toLowerCase())
+                          : [...currentSkills, skill];
+                        handleChange("skills", nextSkills.join(", "));
                       }}
                       className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-semibold border transition duration-150 active:scale-95 ${
                         isSelected
@@ -102,9 +193,20 @@ export default function CreateTeamPage({ profile, onCreated, onCancel }) {
               </div>
             </div>
 
-            <textarea value={form.commitments} onChange={(event) => setForm({ ...form, commitments: event.target.value })} className="min-h-20 rounded-xl border border-slate-200 px-3 py-3 text-sm shadow-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100" placeholder="Cam kết, cách nhau bằng dấu phẩy" />
+            {/* Cam kết */}
+            <div className="grid gap-1">
+              <textarea
+                value={form.commitments}
+                onChange={(e) => handleChange("commitments", e.target.value)}
+                className={`min-h-20 rounded-xl border px-3 py-3 text-sm shadow-sm outline-none focus:ring-4 focus:ring-blue-100 ${errors.commitments ? "border-red-400 focus:border-red-400" : "border-slate-200 focus:border-blue-400"}`}
+                placeholder="Cam kết, cách nhau bằng dấu phẩy"
+              />
+              {errors.commitments && <p className="text-xs font-medium text-red-500 px-1">{errors.commitments}</p>}
+            </div>
+
           </div>
         </section>
+
         <div className="flex justify-end gap-3">
           <button type="button" onClick={onCancel} disabled={loading} className="h-11 rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 shadow-sm hover:bg-slate-50 disabled:opacity-50">Hủy</button>
           <button disabled={loading} className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-bold text-white hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed">
