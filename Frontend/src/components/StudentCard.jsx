@@ -3,11 +3,20 @@ import React from "react";
 import { statusLabel } from "../utils/status.js";
 import Badge from "./Badge.jsx";
 
-export default function StudentCard({ student, currentStudentId, onInvite, onView }) {
+export default function StudentCard({ student, currentStudentId, isCurrentUserLeader = false, onInvite, onView }) {
   const isSelf = student.id === currentStudentId;
-  const canInvite = student.status === "LOOKING" && !isSelf;
+  const isLooking = student.status === "LOOKING";
+  // Chỉ trưởng nhóm mới có thể mời; bản thân không thể tự mời
+  const canInvite = isCurrentUserLeader && isLooking && !isSelf;
   const rating = Number(student.rating ?? 5);
   const ratingText = Number.isInteger(rating) ? rating.toFixed(0) : rating.toFixed(1);
+
+  function getButtonLabel() {
+    if (isSelf) return "Chính bạn";
+    if (!isLooking) return "Đã có nhóm";
+    if (!isCurrentUserLeader) return "Chỉ trưởng nhóm mới có thể mời";
+    return "Mời vào nhóm";
+  }
 
   return (
     <article
@@ -44,9 +53,10 @@ export default function StudentCard({ student, currentStudentId, onInvite, onVie
         type="button"
         onClick={(event) => {
           event.stopPropagation();
-          onInvite?.(student);
+          if (canInvite) onInvite?.(student);
         }}
         disabled={!canInvite}
+        title={!canInvite ? getButtonLabel() : undefined}
         className={`mt-auto inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl text-sm font-bold shadow-sm ${
           canInvite
             ? "bg-blue-600 text-white shadow-blue-600/20 hover:bg-blue-700"
@@ -54,7 +64,7 @@ export default function StudentCard({ student, currentStudentId, onInvite, onVie
         }`}
       >
         <Send size={16} />
-        {isSelf ? "Chính bạn" : canInvite ? "Mời vào nhóm" : "Đã có nhóm"}
+        {getButtonLabel()}
       </button>
     </article>
   );

@@ -48,5 +48,10 @@ export const api = {
     request(`/teams/join-requests/${requestId}/status`, { method: "PATCH", body: JSON.stringify({ status }) }),
   deleteJoinRequest: (requestId) =>
     request(`/teams/join-requests/${requestId}`, { method: "DELETE" }),
+  getInvitations: (params) => request(`/teams/invitations${toQuery(params)}`),
+  createInvitation: (teamId, studentId) =>
+    request(`/teams/${teamId}/invitations`, { method: "POST", body: JSON.stringify({ studentId }) }),
+  updateInvitationStatus: (inviteId, status) =>
+    request(`/teams/invitations/${inviteId}/status`, { method: "PATCH", body: JSON.stringify({ status }) }),
   getProfile: (studentId) => request(`/profile/me${studentId ? toQuery({ studentId }) : ""}`)
 };

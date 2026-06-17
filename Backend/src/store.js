@@ -161,7 +161,8 @@ const initialData = {
       memberIds: [4, 1, 6, 5]
     }
   ],
-  joinRequests: []
+  joinRequests: [],
+  invitations: []
 };
 
 const generatedNames = [
@@ -372,6 +373,11 @@ function normalizeSeedData(data) {
   // that would destroy user-created teams due to a race condition between
   // readStore() calls and in-flight writes.
   if (data.teams.length > 0) {
+    // Ensure invitations field always exists
+    if (!Array.isArray(data.invitations)) {
+      data.invitations = [];
+      return { ...data };
+    }
     return reviewsModified ? { ...data } : data;
   }
 
@@ -381,7 +387,8 @@ function normalizeSeedData(data) {
   return {
     ...data,
     teams,
-    joinRequests: data.joinRequests.filter((request) => teamIds.has(request.teamId))
+    joinRequests: data.joinRequests.filter((request) => teamIds.has(request.teamId)),
+    invitations: data.invitations ?? []
   };
 }
 

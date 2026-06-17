@@ -10,7 +10,7 @@ const studentsPerPage = 8;
 const groupsPerPage = 3;
 const allGroupGoals = "ALL";
 
-export default function DashboardPage({ classroom, students, teams, filters, setFilters, currentStudentId, isStudentInTeam = false, joinRequests = [], onJoinGroup, onInviteStudent, onViewStudent }) {
+export default function DashboardPage({ classroom, students, teams, filters, setFilters, currentStudentId, isStudentInTeam = false, isCurrentUserLeader = false, joinRequests = [], onJoinGroup, onInviteStudent, onViewStudent }) {
   const stats = classroom?.stats ?? {};
   const [page, setPage] = useState(1);
   const [groupPage, setGroupPage] = useState(1);
@@ -81,6 +81,7 @@ export default function DashboardPage({ classroom, students, teams, filters, set
                   key={student.id}
                   student={student}
                   currentStudentId={currentStudentId}
+                  isCurrentUserLeader={isStudentInTeam && isCurrentUserLeader}
                   onInvite={onInviteStudent}
                   onView={onViewStudent}
                 />

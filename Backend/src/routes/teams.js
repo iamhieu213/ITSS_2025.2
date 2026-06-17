@@ -29,6 +29,15 @@ const leaveTeamSchema = z.object({
   transferLeaderId: z.coerce.number().int().positive().optional()
 });
 
+const createInvitationSchema = z.object({
+  studentId: z.coerce.number().int().positive()
+});
+
+const updateInvitationStatusSchema = z.object({
+  status: z.enum(["ACCEPTED", "DECLINED"])
+});
+
+// GET /api/teams
 router.get("/", async (_req, res, next) => {
   try {
     const data = await readStore();
@@ -38,6 +47,41 @@ router.get("/", async (_req, res, next) => {
   }
 });
 
+// GET /api/teams/invitations — phải đặt trước /:id để không bị conflict
+router.get("/invitations", async (req, res, next) => {
+  try {
+    const data = await readStore();
+    if (!Array.isArray(data.invitations)) data.invitations = [];
+
+    const studentId = req.query.studentId ? Number(req.query.studentId) : null;
+    const leaderId = req.query.leaderId ? Number(req.query.leaderId) : null;
+
+    const invitations = data.invitations
+      .filter((inv) => {
+        if (studentId && inv.studentId !== studentId) return false;
+        if (leaderId) {
+          const team = data.teams.find((t) => t.id === inv.teamId);
+          return team?.leaderId === leaderId;
+        }
+        return true;
+      })
+      .map((inv) => {
+        const team = data.teams.find((t) => t.id === inv.teamId);
+        const student = data.students.find((s) => s.id === inv.studentId);
+        return {
+          ...inv,
+          team: team ? serializeTeam(team, data.students) : null,
+          student
+        };
+      });
+
+    res.json(invitations);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// GET /api/teams/join-requests
 router.get("/join-requests", async (req, res, next) => {
   try {
     const data = await readStore();
@@ -66,6 +110,7 @@ router.get("/join-requests", async (req, res, next) => {
   }
 });
 
+// POST /api/teams
 router.post("/", async (req, res, next) => {
   try {
     const payload = createTeamSchema.parse(req.body);
@@ -99,6 +144,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// POST /api/teams/:id/join-requests
 router.post("/:id/join-requests", async (req, res, next) => {
   try {
     const payload = joinRequestSchema.parse(req.body);
@@ -157,6 +203,138 @@ router.post("/:id/join-requests", async (req, res, next) => {
   }
 });
 
+// POST /api/teams/:id/invitations — Trưởng nhóm gửi lời mời
+router.post("/:id/invitations", requireAuth, async (req, res, next) => {
+  try {
+    const payload = createInvitationSchema.parse(req.body);
+    const data = await readStore();
+    const teamId = Number(req.params.id);
+    const team = data.teams.find((item) => item.id === teamId);
+
+    if (!team) return res.status(404).json({ message: "Team not found" });
+    if (team.leaderId !== req.studentId) {
+      return res.status(403).json({ message: "Chỉ trưởng nhóm mới có thể gửi lời mời." });
+    }
+
+    const student = data.students.find((item) => item.id === payload.studentId);
+    if (!student) return res.status(404).json({ message: "Student not found" });
+    if (student.status === "IN_TEAM") {
+      return res.status(400).json({ message: "Sinh viên này đã có nhóm rồi." });
+    }
+    if (team.memberIds.includes(payload.studentId)) {
+      return res.status(400).json({ message: "Sinh viên này đã là thành viên nhóm." });
+    }
+    if (team.memberIds.length >= team.maxMembers) {
+      return res.status(400).json({ message: "Nhóm đã đầy, không thể mời thêm thành viên." });
+    }
+
+    if (!Array.isArray(data.invitations)) data.invitations = [];
+
+    const existingIndex = data.invitations.findIndex(
+      (inv) => inv.teamId === teamId && inv.studentId === payload.studentId && inv.status === "PENDING"
+    );
+    if (existingIndex !== -1) {
+      return res.status(409).json({ message: "Đã có lời mời đang chờ phản hồi từ sinh viên này." });
+    }
+
+    const invitation = {
+      id: Math.max(0, ...data.invitations.map((item) => item.id ?? 0)) + 1,
+      teamId,
+      studentId: payload.studentId,
+      status: "PENDING",
+      createdAt: new Date().toISOString()
+    };
+
+    data.invitations.push(invitation);
+    await writeStore(data);
+
+    // Emit socket notification to the invited student
+    const io = req.app.get("io");
+    if (io) {
+      io.to(`student-${payload.studentId}`).emit("notification", {
+        type: "TEAM_INVITATION",
+        message: `Trưởng nhóm "${team.name}" đã gửi lời mời gia nhập nhóm cho bạn.`,
+        teamId: team.id
+      });
+    }
+
+    res.status(201).json({ ...invitation, team: serializeTeam(team, data.students), student });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// PATCH /api/teams/invitations/:inviteId/status — Sinh viên chấp nhận hoặc từ chối
+router.patch("/invitations/:inviteId/status", requireAuth, async (req, res, next) => {
+  try {
+    const payload = updateInvitationStatusSchema.parse(req.body);
+    const data = await readStore();
+    if (!Array.isArray(data.invitations)) data.invitations = [];
+
+    const inviteId = Number(req.params.inviteId);
+    const invIndex = data.invitations.findIndex((inv) => inv.id === inviteId);
+    if (invIndex === -1) return res.status(404).json({ message: "Invitation not found" });
+
+    const invitation = data.invitations[invIndex];
+    if (invitation.studentId !== req.studentId) {
+      return res.status(403).json({ message: "Bạn không có quyền phản hồi lời mời này." });
+    }
+    if (invitation.status !== "PENDING") {
+      return res.status(400).json({ message: "Lời mời này đã được xử lý rồi." });
+    }
+
+    const team = data.teams.find((t) => t.id === invitation.teamId);
+    const student = data.students.find((s) => s.id === invitation.studentId);
+
+    if (!team) return res.status(404).json({ message: "Team not found" });
+    if (!student) return res.status(404).json({ message: "Student not found" });
+
+    invitation.status = payload.status;
+    invitation.respondedAt = new Date().toISOString();
+
+    if (payload.status === "ACCEPTED") {
+      if (student.status === "IN_TEAM") {
+        return res.status(400).json({ message: "Bạn đã có nhóm, không thể chấp nhận lời mời này." });
+      }
+      if (team.memberIds.length >= team.maxMembers) {
+        return res.status(400).json({ message: "Nhóm đã đầy, không thể tham gia." });
+      }
+
+      if (!team.memberIds.includes(student.id)) {
+        team.memberIds.push(student.id);
+      }
+      student.status = "IN_TEAM";
+
+      // Cancel all other pending invitations for this student
+      data.invitations = data.invitations.map((inv) =>
+        inv.studentId === student.id && inv.id !== inviteId && inv.status === "PENDING"
+          ? { ...inv, status: "DECLINED", respondedAt: new Date().toISOString() }
+          : inv
+      );
+      data.invitations[invIndex] = invitation;
+    }
+
+    await writeStore(data);
+
+    // Notify team leader
+    const io = req.app.get("io");
+    if (io) {
+      const statusText = payload.status === "ACCEPTED" ? "chấp nhận" : "từ chối";
+      io.to(`student-${team.leaderId}`).emit("notification", {
+        type: "INVITATION_RESPONSE",
+        status: payload.status,
+        message: `${student.name} đã ${statusText} lời mời vào nhóm "${team.name}".`,
+        teamId: team.id
+      });
+    }
+
+    res.json({ ...invitation, team: serializeTeam(team, data.students), student });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// PATCH /api/teams/:id/leave
 router.patch("/:id/leave", requireAuth, async (req, res, next) => {
   try {
     const payload = leaveTeamSchema.parse(req.body);
@@ -194,6 +372,9 @@ router.patch("/:id/leave", requireAuth, async (req, res, next) => {
     if (!team.memberIds.length) {
       data.teams.splice(teamIndex, 1);
       data.joinRequests = data.joinRequests.filter((request) => request.teamId !== teamId);
+      if (Array.isArray(data.invitations)) {
+        data.invitations = data.invitations.filter((inv) => inv.teamId !== teamId);
+      }
       await writeStore(data);
       return res.json({ message: "Bạn đã rời nhóm. Nhóm không còn thành viên nên đã được xóa.", team: null });
     }
@@ -205,6 +386,7 @@ router.patch("/:id/leave", requireAuth, async (req, res, next) => {
   }
 });
 
+// DELETE /api/teams/:id
 router.delete("/:id", requireAuth, async (req, res, next) => {
   try {
     const data = await readStore();
@@ -225,6 +407,9 @@ router.delete("/:id", requireAuth, async (req, res, next) => {
 
     data.teams.splice(teamIndex, 1);
     data.joinRequests = data.joinRequests.filter((request) => request.teamId !== teamId);
+    if (Array.isArray(data.invitations)) {
+      data.invitations = data.invitations.filter((inv) => inv.teamId !== teamId);
+    }
     await writeStore(data);
 
     res.json({ message: "Đã xóa nhóm thành công." });
@@ -233,6 +418,7 @@ router.delete("/:id", requireAuth, async (req, res, next) => {
   }
 });
 
+// PATCH /api/teams/join-requests/:requestId/status
 router.patch("/join-requests/:requestId/status", async (req, res, next) => {
   try {
     const payload = updateJoinRequestStatusSchema.parse(req.body);
